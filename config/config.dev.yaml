@@ -1,0 +1,23 @@
+store:
+    server: 10.10.7.152:27017
+    name: elasticshift
+    username: elasticshift
+    password: 3l@$t1c$h1ft
+    monotonih: true
+    timeout: "10s"
+    retry: "10s"
+
+logger:
+    level: "debug"
+    format: "json"
+
+web:
+    http: 0.0.0.0:9100
+    grpc: 0.0.0.0:9101
+
+identity:
+    issuer: http://ubvmide01:8080/identity
+    grpc: 127.0.0.1:9100
+    id: yyjw66rn2hso6wriuzlic62jiy
+    secret: l77r6wixjjtgmo4iym2kmk3jcuuxetj3afnqaw5w3rnl5nu5hehu
+    redirect_uri: http://shift.com:9100/login/callback

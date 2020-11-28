@@ -1,0 +1,23 @@
+store:
+    server: ubuntu.local:27017
+    name: elasticshift
+    username: elasticshift
+    password: 3l@$t1c$h1ft
+    monotonic: true
+    timeout: "10s"
+    retry: "10s"
+
+logger:
+  level: "debug"
+  format: "json"
+
+web:
+  http: 127.0.0.1:9100
+  grpc: 127.0.0.1:9101
+
+identity:
+  issuer: http://127.0.0.1:5556/identity
+  grpc: 127.0.0.1:5557
+  id: yyjw66rn2hso6wriuzlic62jiy
+  secret: l77r6wixjjtgmo4iym2kmk3jcuuxetj3afnqaw5w3rnl5nu5hehu
+  redirect_uri: http://127.0.0.1:5050/login/callback
