@@ -1,0 +1,23 @@
+store:
+    server: 10.0.1.206:27017
+    name: elasticshift
+    username: 
+    password: 
+    monotonih: true
+    timeout: "10s"
+    retry: "10s"
+
+logger:
+  level: "debug"
+  format: "text"
+
+web:
+  http: 127.0.0.1:5050
+  grpc: 127.0.0.1:5051
+
+identity:
+  issuer: http://127.0.0.1:5556/identity
+  grpc: 127.0.0.1:5557
+  id: yyjw66rn2hso6wriuzlic62jiy
+  secret: l77r6wixjjtgmo4iym2kmk3jcuuxetj3afnqaw5w3rnl5nu5hehu
+  redirect_uri: http://127.0.0.1:5050/login/callback

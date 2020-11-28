@@ -15,9 +15,12 @@ func NewDatabase(dbname string, session *mgo.Session) Database {
 
 // Report 存储多个结构体
 type Report struct {
+	Vcs     Vcs
+	Sysconf Sysconf
 }
 
 // InitReportStore ：初始化Report项目的存储
 func (db Database) InitReportStore() Report {
+	// create...
 	return Report{}
 }
