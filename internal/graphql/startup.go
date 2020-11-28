@@ -138,5 +138,4 @@ func Run() error {
 	}()
 
 	return <-errch
-
 }

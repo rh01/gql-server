@@ -9,7 +9,7 @@ store:
 
 logger:
   level: "debug"
-  format: "text"
+  format: "json"
 
 web:
   http: 127.0.0.1:5050

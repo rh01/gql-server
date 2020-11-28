@@ -22,5 +22,8 @@ type Report struct {
 // InitReportStore ：初始化Report项目的存储
 func (db Database) InitReportStore() Report {
 	// create...
-	return Report{}
+	return Report{
+		Vcs:     newVcsStore(db),
+		Sysconf: newSysconfStore(db),
+	}
 }

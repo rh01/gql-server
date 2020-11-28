@@ -46,6 +46,5 @@ func (r *sysconf) GetSysConf(kind, name string, result interface{}) error {
 	q := bson.M{}
 	q["kind"] = kind
 	q["name"] = name
-
 	return r.FindOne(q, result)
 }
