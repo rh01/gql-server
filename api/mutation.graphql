@@ -20,6 +20,11 @@ type Mutation {
     deleteFailure(id: ID!): DeleteFailure
     createFailure(input: CreateFailureInput): Failure!
     updateFailure(id: ID!, input: UpdateFailureInput!): UpdateFailure
+
+    # Auth mutations
+    login(input: LoginInput!): AuthResponse!
+    createUser(input: UserInput!): User!
+    updateUser(id: ID!, input: UserUpdate!): User!
 }
 
 

@@ -8,6 +8,16 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+type AuthResponse struct {
+	AuthToken *AuthToken `json:"authToken" bson:"authToken"`
+	User      *User      `json:"user" bson:"user"`
+}
+
+type AuthToken struct {
+	AccessToken string    `json:"accessToken" bson:"accessToken"`
+	ExpiredAt   time.Time `json:"expiredAt" bson:"expiredAt"`
+}
+
 type Cap struct {
 	ID      bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	Product string        `json:"product" bson:"product"`
@@ -77,6 +87,12 @@ type DeleteTicket struct {
 	Success bool `json:"success" bson:"success"`
 }
 
+type EmailInput struct {
+	From string `json:"from" bson:"from"`
+	To   string `json:"to" bson:"to"`
+	Data string `json:"data" bson:"data"`
+}
+
 type Failure struct {
 	ID        bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	StartTime time.Time     `json:"start_time" bson:"start_time"`
@@ -109,6 +125,11 @@ type FailurePretty struct {
 	Levels   []*string `json:"levels" bson:"levels"`
 	Year     int       `json:"year" bson:"year"`
 	Week     int       `json:"week" bson:"week"`
+}
+
+type LoginInput struct {
+	Username string `json:"username" bson:"username"`
+	Password string `json:"password" bson:"password"`
 }
 
 type OnlineCount struct {
@@ -249,4 +270,35 @@ type UpdateTicketInput struct {
 	AbnormalLt2h int `json:"abnormalLt2h" bson:"abnormalLt2h"`
 	NormalGt2h   int `json:"normalGt2h" bson:"normalGt2h"`
 	AbnormalGt2h int `json:"abnormalGt2h" bson:"abnormalGt2h"`
+}
+
+type User struct {
+	ID       bson.ObjectId `json:"id" bson:"_id,omitempty"`
+	Name     string        `json:"name" bson:"name"`
+	Username string        `json:"username" bson:"username"`
+	Location string        `json:"location" bson:"location"`
+	Password string        `json:"password" bson:"password"`
+	Abbr     string        `json:"abbr" bson:"abbr"`
+	Email    string        `json:"email" bson:"email"`
+	Openhab  string        `json:"openhab" bson:"openhab"`
+}
+
+type UserInput struct {
+	Name     string `json:"name" bson:"name"`
+	Username string `json:"username" bson:"username"`
+	Password string `json:"password" bson:"password"`
+	Location string `json:"location" bson:"location"`
+	Abbr     string `json:"abbr" bson:"abbr"`
+	Email    string `json:"email" bson:"email"`
+	Openhab  string `json:"openhab" bson:"openhab"`
+}
+
+type UserUpdate struct {
+	Name     *string `json:"name" bson:"name"`
+	Username *string `json:"username" bson:"username"`
+	Password *string `json:"password" bson:"password"`
+	Location *string `json:"location" bson:"location"`
+	Abbr     *string `json:"abbr" bson:"abbr"`
+	Email    *string `json:"email" bson:"email"`
+	Openhab  *string `json:"openhab" bson:"openhab"`
 }
