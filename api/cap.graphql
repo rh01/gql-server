@@ -1,0 +1,36 @@
+type Cap {
+    id: ID!
+
+    product: String!
+    desc: String!
+
+    year: Int!
+    week: Int!
+
+    ctime: Timestamp!  
+    utime: Timestamp!
+}
+
+input CreateCapInput {
+    product: String!
+    desc: String!
+}
+
+input UpdateCapInput {
+    product: String!
+    desc: String!
+}
+
+type CapList{
+    code: Int
+    data: [Cap]!
+    count: Int!
+}
+
+type UpdateCap {
+    success: Boolean!
+}
+
+type DeleteCap {
+    success: Boolean!
+}

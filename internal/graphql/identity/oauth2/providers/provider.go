@@ -74,6 +74,7 @@ type Providers struct {
 	store  store.Sysconf
 }
 
+// New ..
 func New(loggr logger.Loggr, s store.Report) Providers {
 	return Providers{loggr: loggr, logger: loggr.GetLogger("oauth2/providers"), store: s.Sysconf}
 }
@@ -93,5 +94,5 @@ func (p Providers) Get(name string) (Provider, error) {
 		return GitlabProvider(p.loggr, conf.Key, conf.Secret, conf.CallbackURL, conf.HookURL), nil
 	}
 
-	return nil, fmt.Errorf("No provider found for ", name)
+	return nil, fmt.Errorf("No provider found for %v", name)
 }

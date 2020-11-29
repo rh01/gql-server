@@ -84,24 +84,18 @@ func Connect(loggr logger.Loggr, cfg Config) (*mgo.Session, error) {
 // 1. Ping the db session to ensure the conenction is live
 // 2. Retries to conenect with database if connectivity broke.
 func autoReconnect(logger *logrus.Entry, cfg Config, session *mgo.Session) {
-
 	go func() {
-
 		disconnected := false
 		for {
-
 			time.Sleep(cfg.RetryIn)
-
 			// Ping function checks the database connectivity
 			err := session.Ping()
 			if err != nil {
-
 				disconnected = true
 				logger.Errorln(fmt.Sprintf("DB ping failed, something went wrong. Reconnecting in %d seconds", cfg.RetryIn))
 
 				//Trying to refresh the db connection
 				session.Refresh()
-
 			} else if disconnected {
 				logger.Infoln("Reconnected to database successfully.")
 				disconnected = false

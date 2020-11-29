@@ -20,12 +20,12 @@ import (
 // Gitlab URL ...
 const (
 	GitlabProviderName = "gitlab"
-	GitlabAuthURL      = "https://gitlab.com/oauth/authorize"
-	GitlabTokenURL     = "https://gitlab.com/oauth/token"
+	GitlabAuthURL      = "https://gitlab.corp.youdao.com/oauth/authorize"
+	GitlabTokenURL     = "https://gitlab.corp.youdao.com/oauth/token"
 
-	GitlabBaseURLV3      = "https://gitlab.com/api/v3"
-	GitlabProfileURL     = GitlabBaseURLV3 + "/user"
-	GitlabGetUserRepoURL = GitlabBaseURLV3 + "/projects"
+	GitlabBaseURLV4      = "https://gitlab.corp.youdao.com/api/v4"
+	GitlabProfileURL     = GitlabBaseURLV4 + "/user"
+	GitlabGetUserRepoURL = GitlabBaseURLV4 + "/projects"
 )
 
 // Gitlab ...
@@ -39,9 +39,7 @@ type Gitlab struct {
 // GitlabProvider ...
 // Creates a new Gitlab provider
 func GitlabProvider(loggr logger.Loggr, clientID, secret, callbackURL, hookURL string) *Gitlab {
-
 	l := loggr.GetLogger("oauth2/gitlab")
-
 	conf := &oauth2.Config{
 		ClientID:     clientID,
 		ClientSecret: secret,

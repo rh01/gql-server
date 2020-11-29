@@ -1,0 +1,13 @@
+type Mutation {
+  # Cap mutations
+  deleteCap(id: ID!): DeleteCap
+  createCap(input: CreateCapInput): Cap!
+  updateCap(id: ID!, input: UpdateCapInput!): UpdateCap
+  # Tickets mutations
+  createTickets(input: NewTicket!):  Boolean!
+  "删除一个工单记录"
+  deleteTickets(id: ID, week: String, year: String): Int!
+  "更新一个工单记录"
+  updateTicket(id: ID, input: NewTicket!): Boolean!
+}
+
