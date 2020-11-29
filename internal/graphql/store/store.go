@@ -30,8 +30,7 @@ type Interface interface {
 	RemoveBySelector(selector interface{}) error
 	RemoveMultiple(ids []interface{}) error
 	GetSession() *mgo.Session
-	GetCapStore(collectionName string) *Store
-	GetTicketStore(collectionName string) *Store
+	GetStore(collectionName string) *Store
 }
 
 func (s *Store) Count(query interface{}) (int, error) {
@@ -46,15 +45,11 @@ func (s *Store) Count(query interface{}) (int, error) {
 	return count, nil
 }
 
-func (s *Store) GetCapStore(collectionName string) *Store {
+func (s *Store) GetStore(collectionName string) *Store {
 	return &Store{
 		Database:       s.Database,
 		CollectionName: collectionName,
 	}
-}
-
-func (s *Store) GetTicketStore(collectionName string) *Store {
-	panic("implement me")
 }
 
 // Store ..

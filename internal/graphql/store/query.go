@@ -40,53 +40,6 @@ type Query interface {
 	AllProductOnlineCount(year int, week int) (*models.OnlineCountAllProduct, error)
 }
 
-func (q query) Ticket(id bson.ObjectId) (*models.Ticket, error) {
-	panic("implement me")
-}
-
-func (q query) TicketPretty(id bson.ObjectId) (*models.TicketPretty, error) {
-	panic("implement me")
-}
-
-func (q query) Failure(id bson.ObjectId) (*models.Failure, error) {
-	panic("implement me")
-}
-
-func (q query) FailurePretty(id bson.ObjectId) (*models.FailurePretty, error) {
-	panic("implement me")
-}
-
-func (q query) FailureByYearWeek(year int, week int) (*models.Failure, error) {
-	panic("implement me")
-}
-
-func (q query) ListFailures(pageIndex int, pageSize int, filter string) (*models.FailureList, error) {
-	panic("implement me")
-}
-
-func (q query) Slo(id bson.ObjectId) (*models.Slo, error) {
-	panic("implement me")
-}
-
-func (q query) SloPretty(id bson.ObjectId) (*models.SloPretty, error) {
-	panic("implement me")
-}
-
-func (q query) SloByYearWeek(year int, week int) (*models.Slo, error) {
-	panic("implement me")
-}
-
-func (q query) ListSlos(pageIndex int, pageSize int, filter string) (*models.SloList, error) {
-	panic("implement me")
-}
-
-func (q query) TicketByYearWeek(year int, week int) (*models.Ticket, error) {
-	panic("implement me")
-}
-
-func (q query) ListTickets(pageIndex int, pageSize int, filter string) (*models.TicketList, error) {
-	panic("implement me")
-}
 
 func (q query) OnlineCount(id bson.ObjectId) (*models.OnlineCount, error) {
 	panic("implement me")

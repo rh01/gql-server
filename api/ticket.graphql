@@ -10,11 +10,17 @@ type Order {
 }
 
 type TicketPretty {
-    orders: [Int]
-    aliases: [String]
+    orders: [TicketEchartData]
+    legend: [String!]
     week: Int!
     year: Int!
 }
+
+type TicketEchartData {
+    name: String!
+    value: Int!
+}
+
 
 type Ticket {
     id: ID!

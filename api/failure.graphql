@@ -16,8 +16,8 @@ type Failure {
 
     level: String!
 
-    week: String!
-    year: String!
+    week: Int!
+    year: Int!
     created: Timestamp!
     updated: Timestamp!
 }
@@ -30,13 +30,9 @@ input CreateFailureInput {
     end_time: Timestamp!
     duration: Int
 
-    "业务线"
     product: String!
-    "故障描述"
     desc: String!
-    "故障标题"
     title: String
-    "故障上报人"
     recorder: String!
 
     level: String!

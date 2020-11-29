@@ -37,8 +37,8 @@ type DeleteSlo {
 
 type SloPretty {
     product: String!
-    sloes: [Float]
-    names: [String]
+    sloes: [Float!]
+    legend: [String!]
     year: Int!
     week: Int!
 }

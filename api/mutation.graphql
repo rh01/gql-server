@@ -9,8 +9,9 @@ type Mutation {
     updateTicket(id: ID!, input: UpdateTicketInput!): UpdateTicket
     # OnlineCount mutations
     deleteOnlineCount(id: ID!): DeleteOnlineCount
-    createOnlineCount(input: CreateOnlineCountInput): Cap!
+    createOnlineCount(input: CreateOnlineCountInput): OnlineCount!
     updateOnlineCount(id: ID!, input: UpdateOnlineCountInput!): UpdateOnlineCount
+
     # Slo mutations
     deleteSlo(id: ID!): DeleteSlo
     createSlo(input: CreateSloInput): Slo!

@@ -8,15 +8,6 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-type Base struct {
-	Ctime   time.Time `json:"ctime" bson:"ctime"`
-	Utime   time.Time `json:"utime" bson:"utime"`
-	Creator *User     `json:"creator" bson:"creator"`
-	Updator *User     `json:"updator" bson:"updator"`
-	Week    int       `json:"week" bson:"week"`
-	Year    int       `json:"year" bson:"year"`
-}
-
 type Cap struct {
 	ID      bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	Product string        `json:"product" bson:"product"`
@@ -42,15 +33,11 @@ type CreateFailureInput struct {
 	StartTime time.Time `json:"start_time" bson:"start_time"`
 	EndTime   time.Time `json:"end_time" bson:"end_time"`
 	Duration  *int      `json:"duration" bson:"duration"`
-	// 业务线
-	Product string `json:"product" bson:"product"`
-	// 故障描述
-	Desc string `json:"desc" bson:"desc"`
-	// 故障标题
-	Title *string `json:"title" bson:"title"`
-	// 故障上报人
-	Recorder string `json:"recorder" bson:"recorder"`
-	Level    string `json:"level" bson:"level"`
+	Product   string    `json:"product" bson:"product"`
+	Desc      string    `json:"desc" bson:"desc"`
+	Title     *string   `json:"title" bson:"title"`
+	Recorder  string    `json:"recorder" bson:"recorder"`
+	Level     string    `json:"level" bson:"level"`
 }
 
 type CreateOnlineCountInput struct {
@@ -104,8 +91,8 @@ type Failure struct {
 	// 故障上报人
 	Recorder string    `json:"recorder" bson:"recorder"`
 	Level    string    `json:"level" bson:"level"`
-	Week     string    `json:"week" bson:"week"`
-	Year     string    `json:"year" bson:"year"`
+	Week     int       `json:"week" bson:"week"`
+	Year     int       `json:"year" bson:"year"`
 	Created  time.Time `json:"created" bson:"created"`
 	Updated  time.Time `json:"updated" bson:"updated"`
 }
@@ -128,8 +115,6 @@ type OnlineCount struct {
 	ID      bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	Ctime   time.Time     `json:"ctime" bson:"ctime"`
 	Utime   time.Time     `json:"utime" bson:"utime"`
-	Creator *User         `json:"creator" bson:"creator"`
-	Updator *User         `json:"updator" bson:"updator"`
 	Week    int           `json:"week" bson:"week"`
 	Year    int           `json:"year" bson:"year"`
 	Product string        `json:"product" bson:"product"`
@@ -175,11 +160,11 @@ type SloList struct {
 }
 
 type SloPretty struct {
-	Product string     `json:"product" bson:"product"`
-	Sloes   []*float64 `json:"sloes" bson:"sloes"`
-	Names   []*string  `json:"names" bson:"names"`
-	Year    int        `json:"year" bson:"year"`
-	Week    int        `json:"week" bson:"week"`
+	Product string    `json:"product" bson:"product"`
+	Sloes   []float64 `json:"sloes" bson:"sloes"`
+	Legend  []string  `json:"legend" bson:"legend"`
+	Year    int       `json:"year" bson:"year"`
+	Week    int       `json:"week" bson:"week"`
 }
 
 type Ticket struct {
@@ -191,6 +176,11 @@ type Ticket struct {
 	Utime time.Time     `json:"utime" bson:"utime"`
 }
 
+type TicketEchartData struct {
+	Name  string `json:"name" bson:"name"`
+	Value int    `json:"value" bson:"value"`
+}
+
 type TicketList struct {
 	Data  []*Ticket `json:"data" bson:"data"`
 	Count int       `json:"count" bson:"count"`
@@ -198,10 +188,10 @@ type TicketList struct {
 }
 
 type TicketPretty struct {
-	Orders  []*int    `json:"orders" bson:"orders"`
-	Aliases []*string `json:"aliases" bson:"aliases"`
-	Week    int       `json:"week" bson:"week"`
-	Year    int       `json:"year" bson:"year"`
+	Orders []*TicketEchartData `json:"orders" bson:"orders"`
+	Legend []string            `json:"legend" bson:"legend"`
+	Week   int                 `json:"week" bson:"week"`
+	Year   int                 `json:"year" bson:"year"`
 }
 
 type UpdateCap struct {
@@ -259,8 +249,4 @@ type UpdateTicketInput struct {
 	AbnormalLt2h int `json:"abnormalLt2h" bson:"abnormalLt2h"`
 	NormalGt2h   int `json:"normalGt2h" bson:"normalGt2h"`
 	AbnormalGt2h int `json:"abnormalGt2h" bson:"abnormalGt2h"`
-}
-
-type User struct {
-	Name string `json:"name" bson:"name"`
 }

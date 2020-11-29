@@ -26,8 +26,6 @@ type OnlineCount {
     id: ID!
     ctime: Timestamp!
     utime: Timestamp!
-    creator: User
-    updator: User
     week: Int!
     year: Int!
     product: String!
@@ -39,17 +37,4 @@ type OnlineCountAllProduct {
     products: [String]
     year: Int!
     week: Int!
-}
-
-type Base {
-    ctime: Timestamp!
-    utime: Timestamp!
-    creator: User
-    updator: User
-    week: Int!
-    year: Int!
-}
-
-type User {
-    name: String!
 }
