@@ -7,18 +7,18 @@ import (
 )
 
 func (q QueryResolver) Slo(ctx context.Context, id bson.ObjectId) (*models.Slo, error) {
-	panic("implement me")
+	return q.Query.Slo(id)
 }
 
 func (q QueryResolver) SloPretty(ctx context.Context, id bson.ObjectId) (*models.SloPretty, error) {
-	panic("implement me")
+	return q.Query.SloPretty(id)
 }
 
 func (q QueryResolver) SloByYearWeek(ctx context.Context, year int, week int) (*models.Slo, error) {
-	panic("implement me")
+	return q.Query.SloByYearWeek(year, week)
 }
 
 func (q QueryResolver) ListSlos(ctx context.Context, pageIndex int, pageSize int, filter string) (*models.SloList, error) {
-	panic("implement me")
+	return q.Query.ListSlos(pageIndex, pageSize, filter)
 }
 

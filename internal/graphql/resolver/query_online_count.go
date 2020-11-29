@@ -7,17 +7,17 @@ import (
 )
 
 func (q QueryResolver) OnlineCount(ctx context.Context, id bson.ObjectId) (*models.OnlineCount, error) {
-	panic("implement me")
+	return q.Query.OnlineCount(id)
 }
 
 func (q QueryResolver) OnlineCountByYearWeek(ctx context.Context, year int, week int) (*models.OnlineCount, error) {
-	panic("implement me")
+	return q.Query.OnlineCountByYearWeek(year, week)
 }
 
 func (q QueryResolver) ListOnlineCounts(ctx context.Context, pageIndex int, pageSize int, filter string) (*models.OnlineCountList, error) {
-	panic("implement me")
+	return q.Query.ListOnlineCounts(pageIndex, pageSize, filter)
 }
 
 func (q QueryResolver) AllProductOnlineCount(ctx context.Context, year int, week int) (*models.OnlineCountAllProduct, error) {
-	panic("implement me")
+	return q.Query.AllProductOnlineCount(year, week)
 }
