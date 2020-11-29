@@ -38,6 +38,9 @@ type Query interface {
 	OnlineCountByYearWeek(year int, week int) (*models.OnlineCount, error)
 	ListOnlineCounts(pageIndex int, pageSize int, filter string) (*models.OnlineCountList, error)
 	AllProductOnlineCount(year int, week int) (*models.OnlineCountAllProduct, error)
+
+	Users() ([]*models.User, error)
+	User(id bson.ObjectId) (*models.User, error)
 }
 
 

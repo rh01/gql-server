@@ -8,9 +8,6 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-var (
-	recordNotFound = "record not found"
-)
 
 // Interface ..
 // Abstract database interactions.

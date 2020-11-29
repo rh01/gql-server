@@ -41,8 +41,11 @@ type Mutation interface {
 	DeleteFailure(id bson.ObjectId) (*models.DeleteFailure, error)
 	CreateFailure(input *models.CreateFailureInput) (*models.Failure, error)
 	UpdateFailure(id bson.ObjectId, input models.UpdateFailureInput) (*models.UpdateFailure, error)
-}
 
+	Login(input models.LoginInput) (*models.AuthResponse, error)
+	CreateUser(input models.UserInput) (*models.User, error)
+	UpdateUser(id bson.ObjectId, input models.UserUpdate) (*models.User, error)
+}
 
 // newMutationStore ..
 func newMutationStore(d Database) Mutation {
