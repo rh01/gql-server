@@ -6,15 +6,19 @@ require (
 	github.com/99designs/gqlgen v0.13.0
 	github.com/coreos/go-oidc v2.2.1+incompatible
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/go-chi/chi v3.3.2+incompatible
 	github.com/google/go-cmp v0.5.2 // indirect
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0
+	github.com/gorilla/websocket v1.4.2
 	github.com/graphql-go/graphql v0.7.9
+	github.com/joho/godotenv v1.3.0
 	github.com/justinas/alice v1.2.0
 	github.com/mitchellh/mapstructure v0.0.0-20180203102830-a4e142e9c047
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/pquerna/cachecontrol v0.0.0-20200921180117-858c6e7e6b7e // indirect
+	github.com/rs/cors v1.6.0
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.7.0
 	github.com/vektah/gqlparser/v2 v2.1.0

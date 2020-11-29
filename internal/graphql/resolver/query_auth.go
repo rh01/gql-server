@@ -7,10 +7,10 @@ import (
 )
 
 func (q QueryResolver) Users(ctx context.Context) ([]*models.User, error) {
-	panic("implement me")
+	return q.Query.Users()
 }
 
 func (q QueryResolver) User(ctx context.Context, id bson.ObjectId) (*models.User, error) {
-	panic("implement me")
+	return q.Query.User(id)
 }
 

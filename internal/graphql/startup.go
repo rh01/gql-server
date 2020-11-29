@@ -11,8 +11,6 @@ import (
 	"report/internal/graphql/store"
 
 	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
-
 	"github.com/justinas/alice"
 
 	"report/internal/pkg/logger"
@@ -109,12 +107,12 @@ func Run() error {
 	go func() {
 		errch <- func() error {
 			// dialopts := []grpc.DialOption{grpc.WithInsecure()}
-			router := mux.NewRouter()
+			//router := mux.NewRouter()
 			// err := RegisterHTTPServices(ctx, router, c.Web.GRPC, dialopts)
 			// if err != nil {
 			// 	return fmt.Errorf("Error when registering services.. : %v", err)
 			// }
-			s.Router.Handle("/", router)
+			//s.Router.Handle("/", router)
 			serv = &http.Server{Addr: c.Web.HTTP, Handler: publicChain.Then(s.Router)}
 			logger.Info("Exposing HTTP services on ", c.Web.HTTP)
 			err = serv.ListenAndServe()

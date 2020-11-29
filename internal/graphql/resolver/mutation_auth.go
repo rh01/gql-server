@@ -19,7 +19,7 @@ func (m MutationResolver) Login(ctx context.Context, input models.LoginInput) (*
 }
 
 func (m MutationResolver) CreateUser(ctx context.Context, input models.UserInput) (*models.User, error) {
-	panic("implement me")
+	return m.Mutation.CreateUser(input)
 }
 
 func (m MutationResolver) UpdateUser(ctx context.Context, id bson.ObjectId, input models.UserUpdate) (*models.User, error) {
