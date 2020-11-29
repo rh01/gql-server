@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/http/pprof"
 	"report/internal/graphql/generated"
+	"report/internal/graphql/middleware"
 	"report/internal/graphql/resolver"
 	"github.com/99designs/gqlgen/graphql/handler"
 
@@ -27,6 +28,7 @@ type Server struct {
 	Logger    *logrus.Entry
 	DB        store.Database
 	Router    *mux.Router
+	Resolver  *resolver.Resolver
 	Providers providers.Providers
 	Ctx       context.Context
 	Report    store.Report
@@ -47,10 +49,12 @@ func New(ctx context.Context, c ServerConfig) (*Server, error) {
 	//s.Store = s.DB.I
 
 	// resolver...
-	// s.Resolver = &resolver.Shift{}
+	s.Resolver = resolver.NewResolver(s.Report, s.Logger)
 
 	r := mux.NewRouter()
 	s.Router = r
+
+	s.Router.Use(middleware.AuthMiddleware(s.Report))
 
 	// // pprof
 	r.HandleFunc("/debug/pprof", pprof.Index)
@@ -99,20 +103,15 @@ func Disable(h http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-
 func (s *Server) registerGraphQLServices() error {
 	r := s.Router
-
-	resolver := resolver.NewResolver(s.Report, s.Logger)
-	execSchema := generated.NewExecutableSchema(generated.Config{Resolvers: resolver})
+	execSchema := generated.NewExecutableSchema(generated.Config{Resolvers: s.Resolver})
 	srv := handler.NewDefaultServer(execSchema)
 	r.Handle("/playground", Disable(playground.Handler("GraphQL playground", "/query")))
 	r.Handle("/query", srv)
 	s.Logger.Debugf("connect to port 8080 for GraphQL playground")
 	return nil
 }
-
-
 
 func (s *Server) registerEndpointServices() {
 
