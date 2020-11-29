@@ -7,13 +7,13 @@ import (
 )
 
 func (m MutationResolver) DeleteOnlineCount(ctx context.Context, id bson.ObjectId) (*models.DeleteOnlineCount, error) {
-	panic("implement me")
+	return m.Mutation.DeleteOnlineCount(id)
 }
 
 func (m MutationResolver) CreateOnlineCount(ctx context.Context, input *models.CreateOnlineCountInput) (*models.OnlineCount, error) {
-	panic("implement me")
+	return m.Mutation.CreateOnlineCount(input)
 }
 
 func (m MutationResolver) UpdateOnlineCount(ctx context.Context, id bson.ObjectId, input models.UpdateOnlineCountInput) (*models.UpdateOnlineCount, error) {
-	panic("implement me")
+	return m.Mutation.UpdateOnlineCount(id, input)
 }

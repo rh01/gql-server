@@ -11,10 +11,9 @@ func (m MutationResolver) CreateTicket(ctx context.Context, input *models.Create
 }
 
 func (m MutationResolver) DeleteTicket(ctx context.Context, id bson.ObjectId) (*models.DeleteTicket, error) {
-	panic("implement me")
+	return m.Mutation.DeleteTicket(id)
 }
 
 func (m MutationResolver) UpdateTicket(ctx context.Context, id bson.ObjectId, input models.UpdateTicketInput) (*models.UpdateTicket, error) {
-	panic("implement me")
+	return m.Mutation.UpdateTicket(id, input)
 }
-
