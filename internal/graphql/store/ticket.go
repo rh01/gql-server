@@ -107,7 +107,6 @@ func (q *query) ListTickets(pageIndex int, pageSize int, filter string) (*models
 }
 
 // mutation
-
 func (m *mutation) DeleteTicket(id bson.ObjectId) (*models.DeleteTicket, error) {
 	m.Logger.Infof("delete ticket %s", id.Hex())
 
@@ -144,7 +143,7 @@ func (m *mutation) CreateTicket(input *models.CreateTicketInput) (*models.Ticket
 			ticket.Year, ticket.Week = year, week
 			// first observe this year and week whether exist or not product record
 
-			if err := m.GetStore("cap").Save(cap); err != nil {
+			if err := m.GetStore("ticket").Save(ticket); err != nil {
 				m.Logger.Errorf("cannot insert ticket, error: %v", err)
 
 				return nil, fmt.Errorf("cannot insert ticket, error: %v", err)

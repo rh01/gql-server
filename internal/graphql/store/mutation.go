@@ -29,22 +29,20 @@ type Mutation interface {
 
 	//OnlineCount mutations
 	DeleteOnlineCount(id bson.ObjectId) (*models.DeleteOnlineCount, error)
-	CreateOnlineCount(input *models.CreateOnlineCountInput) (*models.Cap, error)
+	CreateOnlineCount(input *models.CreateOnlineCountInput) (*models.OnlineCount, error)
 	UpdateOnlineCount(id bson.ObjectId, input models.UpdateOnlineCountInput) (*models.UpdateOnlineCount, error)
+
+	// Slo mutations
+	DeleteSlo(id bson.ObjectId) (*models.DeleteSlo, error)
+	CreateSlo(input *models.CreateSloInput) (*models.Slo, error)
+	UpdateSlo(id bson.ObjectId, input models.UpdateSloInput) (*models.UpdateSlo, error)
+
+	// Failure mutations
+	DeleteFailure(id bson.ObjectId) (*models.DeleteFailure, error)
+	CreateFailure(input *models.CreateFailureInput) (*models.Failure, error)
+	UpdateFailure(id bson.ObjectId, input models.UpdateFailureInput) (*models.UpdateFailure, error)
 }
 
-
-func (m *mutation) DeleteOnlineCount(id bson.ObjectId) (*models.DeleteOnlineCount, error) {
-	panic("implement me")
-}
-
-func (m *mutation) CreateOnlineCount(input *models.CreateOnlineCountInput) (*models.Cap, error) {
-	panic("implement me")
-}
-
-func (m *mutation) UpdateOnlineCount(id bson.ObjectId, input models.UpdateOnlineCountInput) (*models.UpdateOnlineCount, error) {
-	panic("implement me")
-}
 
 // newMutationStore ..
 func newMutationStore(d Database) Mutation {

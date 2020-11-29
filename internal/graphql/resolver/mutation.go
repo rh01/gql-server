@@ -5,8 +5,7 @@ import (
 	"report/internal/graphql/store"
 )
 
-type QueryResolver struct {
+type MutationResolver struct {
 	store.Report
-
 	Logger *logrus.Entry
 }

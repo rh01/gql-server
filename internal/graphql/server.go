@@ -2,6 +2,7 @@ package graphql
 
 import (
 	"github.com/99designs/gqlgen/graphql/playground"
+	"net/http"
 	"net/http/pprof"
 	"report/internal/graphql/generated"
 	"report/internal/graphql/resolver"
@@ -89,13 +90,23 @@ func New(ctx context.Context, c ServerConfig) (*Server, error) {
 	return s, nil
 }
 
+func Disable(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		h(w, r)
+	}
+}
+
+
 func (s *Server) registerGraphQLServices() error {
 	r := s.Router
 
 	resolver := resolver.NewResolver(s.Report, s.Logger)
 	execSchema := generated.NewExecutableSchema(generated.Config{Resolvers: resolver})
 	srv := handler.NewDefaultServer(execSchema)
-	r.Handle("/playground", playground.Handler("GraphQL playground", "/graphql"))
+	r.Handle("/playground", Disable(playground.Handler("GraphQL playground", "/query")))
 	r.Handle("/query", srv)
 	s.Logger.Debugf("connect to port 8080 for GraphQL playground")
 	return nil
