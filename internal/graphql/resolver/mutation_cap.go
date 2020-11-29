@@ -61,6 +61,7 @@ func (m MutationResolver) UpdateOnlineCount(ctx context.Context, id bson.ObjectI
 	panic("implement me")
 }
 
+// Cap mutations
 func (m MutationResolver) DeleteCap(ctx context.Context, id bson.ObjectId) (*models.DeleteCap, error) {
 	return m.Mutation.DeleteCap(id)
 }

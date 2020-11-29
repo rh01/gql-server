@@ -24,7 +24,7 @@ type Mutation interface {
 
 	// Ticket mutations
 	DeleteTicket(id bson.ObjectId) (*models.DeleteTicket, error)
-	CreateTicket(input *models.CreateTicketInput) (*models.Cap, error)
+	CreateTicket(input *models.CreateTicketInput) (*models.Ticket, error)
 	UpdateTicket(id bson.ObjectId, input models.UpdateTicketInput) (*models.UpdateTicket, error)
 
 	//OnlineCount mutations
@@ -33,17 +33,6 @@ type Mutation interface {
 	UpdateOnlineCount(id bson.ObjectId, input models.UpdateOnlineCountInput) (*models.UpdateOnlineCount, error)
 }
 
-func (m *mutation) DeleteTicket(id bson.ObjectId) (*models.DeleteTicket, error) {
-	panic("implement me")
-}
-
-func (m *mutation) CreateTicket(input *models.CreateTicketInput) (*models.Cap, error) {
-	panic("implement me")
-}
-
-func (m *mutation) UpdateTicket(id bson.ObjectId, input models.UpdateTicketInput) (*models.UpdateTicket, error) {
-	panic("implement me")
-}
 
 func (m *mutation) DeleteOnlineCount(id bson.ObjectId) (*models.DeleteOnlineCount, error) {
 	panic("implement me")

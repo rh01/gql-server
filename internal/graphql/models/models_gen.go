@@ -191,6 +191,11 @@ type Ticket struct {
 	Utime time.Time     `json:"utime" bson:"utime"`
 }
 
+type TicketEchartData struct {
+	Name  string `json:"name" bson:"name"`
+	Value int    `json:"value" bson:"value"`
+}
+
 type TicketList struct {
 	Data  []*Ticket `json:"data" bson:"data"`
 	Count int       `json:"count" bson:"count"`
@@ -198,10 +203,10 @@ type TicketList struct {
 }
 
 type TicketPretty struct {
-	Orders  []*int    `json:"orders" bson:"orders"`
-	Aliases []*string `json:"aliases" bson:"aliases"`
-	Week    int       `json:"week" bson:"week"`
-	Year    int       `json:"year" bson:"year"`
+	Orders []*TicketEchartData `json:"orders" bson:"orders"`
+	Legend []string            `json:"legend" bson:"legend"`
+	Week   int                 `json:"week" bson:"week"`
+	Year   int                 `json:"year" bson:"year"`
 }
 
 type UpdateCap struct {

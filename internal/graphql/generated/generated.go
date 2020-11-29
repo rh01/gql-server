@@ -226,6 +226,11 @@ type ComplexityRoot struct {
 		Year  func(childComplexity int) int
 	}
 
+	TicketEchartData struct {
+		Name  func(childComplexity int) int
+		Value func(childComplexity int) int
+	}
+
 	TicketList struct {
 		Code  func(childComplexity int) int
 		Count func(childComplexity int) int
@@ -233,10 +238,10 @@ type ComplexityRoot struct {
 	}
 
 	TicketPretty struct {
-		Aliases func(childComplexity int) int
-		Orders  func(childComplexity int) int
-		Week    func(childComplexity int) int
-		Year    func(childComplexity int) int
+		Legend func(childComplexity int) int
+		Orders func(childComplexity int) int
+		Week   func(childComplexity int) int
+		Year   func(childComplexity int) int
 	}
 
 	UpdateCap struct {
@@ -1321,6 +1326,20 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Ticket.Year(childComplexity), true
 
+	case "TicketEchartData.name":
+		if e.complexity.TicketEchartData.Name == nil {
+			break
+		}
+
+		return e.complexity.TicketEchartData.Name(childComplexity), true
+
+	case "TicketEchartData.value":
+		if e.complexity.TicketEchartData.Value == nil {
+			break
+		}
+
+		return e.complexity.TicketEchartData.Value(childComplexity), true
+
 	case "TicketList.code":
 		if e.complexity.TicketList.Code == nil {
 			break
@@ -1342,12 +1361,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.TicketList.Data(childComplexity), true
 
-	case "TicketPretty.aliases":
-		if e.complexity.TicketPretty.Aliases == nil {
+	case "TicketPretty.legend":
+		if e.complexity.TicketPretty.Legend == nil {
 			break
 		}
 
-		return e.complexity.TicketPretty.Aliases(childComplexity), true
+		return e.complexity.TicketPretty.Legend(childComplexity), true
 
 	case "TicketPretty.orders":
 		if e.complexity.TicketPretty.Orders == nil {
@@ -1764,11 +1783,17 @@ type SloPretty {
 }
 
 type TicketPretty {
-    orders: [Int]
-    aliases: [String]
+    orders: [TicketEchartData]
+    legend: [String!]
     week: Int!
     year: Int!
 }
+
+type TicketEchartData {
+    name: String!
+    value: Int!
+}
+
 
 type Ticket {
     id: ID!
@@ -6904,6 +6929,76 @@ func (ec *executionContext) _Ticket_utime(ctx context.Context, field graphql.Col
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _TicketEchartData_name(ctx context.Context, field graphql.CollectedField, obj *models.TicketEchartData) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "TicketEchartData",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _TicketEchartData_value(ctx context.Context, field graphql.CollectedField, obj *models.TicketEchartData) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "TicketEchartData",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Value, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(int)
+	fc.Result = res
+	return ec.marshalNInt2int(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _TicketList_data(ctx context.Context, field graphql.CollectedField, obj *models.TicketList) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -7033,12 +7128,12 @@ func (ec *executionContext) _TicketPretty_orders(ctx context.Context, field grap
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*int)
+	res := resTmp.([]*models.TicketEchartData)
 	fc.Result = res
-	return ec.marshalOInt2ᚕᚖint(ctx, field.Selections, res)
+	return ec.marshalOTicketEchartData2ᚕᚖreportᚋinternalᚋgraphqlᚋmodelsᚐTicketEchartData(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _TicketPretty_aliases(ctx context.Context, field graphql.CollectedField, obj *models.TicketPretty) (ret graphql.Marshaler) {
+func (ec *executionContext) _TicketPretty_legend(ctx context.Context, field graphql.CollectedField, obj *models.TicketPretty) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -7056,7 +7151,7 @@ func (ec *executionContext) _TicketPretty_aliases(ctx context.Context, field gra
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Aliases, nil
+		return obj.Legend, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -7065,9 +7160,9 @@ func (ec *executionContext) _TicketPretty_aliases(ctx context.Context, field gra
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*string)
+	res := resTmp.([]string)
 	fc.Result = res
-	return ec.marshalOString2ᚕᚖstring(ctx, field.Selections, res)
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _TicketPretty_week(ctx context.Context, field graphql.CollectedField, obj *models.TicketPretty) (ret graphql.Marshaler) {
@@ -9952,6 +10047,38 @@ func (ec *executionContext) _Ticket(ctx context.Context, sel ast.SelectionSet, o
 	return out
 }
 
+var ticketEchartDataImplementors = []string{"TicketEchartData"}
+
+func (ec *executionContext) _TicketEchartData(ctx context.Context, sel ast.SelectionSet, obj *models.TicketEchartData) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, ticketEchartDataImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("TicketEchartData")
+		case "name":
+			out.Values[i] = ec._TicketEchartData_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "value":
+			out.Values[i] = ec._TicketEchartData_value(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var ticketListImplementors = []string{"TicketList"}
 
 func (ec *executionContext) _TicketList(ctx context.Context, sel ast.SelectionSet, obj *models.TicketList) graphql.Marshaler {
@@ -9999,8 +10126,8 @@ func (ec *executionContext) _TicketPretty(ctx context.Context, sel ast.Selection
 			out.Values[i] = graphql.MarshalString("TicketPretty")
 		case "orders":
 			out.Values[i] = ec._TicketPretty_orders(ctx, field, obj)
-		case "aliases":
-			out.Values[i] = ec._TicketPretty_aliases(ctx, field, obj)
+		case "legend":
+			out.Values[i] = ec._TicketPretty_legend(ctx, field, obj)
 		case "week":
 			out.Values[i] = ec._TicketPretty_week(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -11325,6 +11452,42 @@ func (ec *executionContext) marshalOString2string(ctx context.Context, sel ast.S
 	return graphql.MarshalString(v)
 }
 
+func (ec *executionContext) unmarshalOString2ᚕstringᚄ(ctx context.Context, v interface{}) ([]string, error) {
+	if v == nil {
+		return nil, nil
+	}
+	var vSlice []interface{}
+	if v != nil {
+		if tmp1, ok := v.([]interface{}); ok {
+			vSlice = tmp1
+		} else {
+			vSlice = []interface{}{v}
+		}
+	}
+	var err error
+	res := make([]string, len(vSlice))
+	for i := range vSlice {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
+		res[i], err = ec.unmarshalNString2string(ctx, vSlice[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return res, nil
+}
+
+func (ec *executionContext) marshalOString2ᚕstringᚄ(ctx context.Context, sel ast.SelectionSet, v []string) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	for i := range v {
+		ret[i] = ec.marshalNString2string(ctx, sel, v[i])
+	}
+
+	return ret
+}
+
 func (ec *executionContext) unmarshalOString2ᚕᚖstring(ctx context.Context, v interface{}) ([]*string, error) {
 	if v == nil {
 		return nil, nil
@@ -11421,6 +11584,53 @@ func (ec *executionContext) marshalOTicket2ᚖreportᚋinternalᚋgraphqlᚋmode
 		return graphql.Null
 	}
 	return ec._Ticket(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalOTicketEchartData2ᚕᚖreportᚋinternalᚋgraphqlᚋmodelsᚐTicketEchartData(ctx context.Context, sel ast.SelectionSet, v []*models.TicketEchartData) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOTicketEchartData2ᚖreportᚋinternalᚋgraphqlᚋmodelsᚐTicketEchartData(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
+func (ec *executionContext) marshalOTicketEchartData2ᚖreportᚋinternalᚋgraphqlᚋmodelsᚐTicketEchartData(ctx context.Context, sel ast.SelectionSet, v *models.TicketEchartData) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._TicketEchartData(ctx, sel, v)
 }
 
 func (ec *executionContext) marshalOTicketList2ᚖreportᚋinternalᚋgraphqlᚋmodelsᚐTicketList(ctx context.Context, sel ast.SelectionSet, v *models.TicketList) graphql.Marshaler {

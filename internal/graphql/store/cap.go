@@ -11,7 +11,7 @@ import (
 func (m *mutation) DeleteCap(id bson.ObjectId) (*models.DeleteCap, error) {
 	m.Logger.Infof("delete cap %s", id.Hex())
 
-	if err := m.GetCapStore("cap").Remove(id); err != nil {
+	if err := m.GetStore("cap").Remove(id); err != nil {
 		m.Logger.Errorf("cannot delete cap %s, err: %s", id.Hex(), err)
 		return &models.DeleteCap{Success: false}, fmt.Errorf("cannot delete cap with id: %s, error: %v", id, err)
 	}
@@ -26,7 +26,7 @@ func (m *mutation) CreateCap(input *models.CreateCapInput) (*models.Cap, error) 
 	q["year"] = year
 	q["week"] = week
 	var cap = &models.Cap{}
-	if err := m.GetCapStore("cap").FindOne(q, cap); err != nil {
+	if err := m.GetStore("cap").FindOne(q, cap); err != nil {
 		if err == mgo.ErrNotFound {
 			m.Logger.Infof("can't find cap, I will create new one'")
 
@@ -38,7 +38,7 @@ func (m *mutation) CreateCap(input *models.CreateCapInput) (*models.Cap, error) 
 			cap.Year, cap.Week = year, week
 			// first observe this year and week whether exist or not product record
 
-			if err := m.GetCapStore("cap").Save(cap); err != nil {
+			if err := m.GetStore("cap").Save(cap); err != nil {
 				m.Logger.Errorf("cannot insert cap, error: %v", err)
 
 				return nil, fmt.Errorf("cannot insert cap, error: %v", err)
@@ -56,7 +56,7 @@ func (m *mutation) UpdateCap(id bson.ObjectId, input models.UpdateCapInput) (*mo
 	var update = bson.M{}
 	update["$set"] = bson.M{"product": input.Product, "desc": input.Desc}
 
-	if err := m.GetCapStore("cap").UpdateID(id, update); err != nil {
+	if err := m.GetStore("cap").UpdateID(id, update); err != nil {
 		m.Logger.Errorf("update cap failed, error: %v", err)
 		return &models.UpdateCap{Success: false}, fmt.Errorf("cannot update cap, error: %v", err)
 	}
@@ -64,35 +64,41 @@ func (m *mutation) UpdateCap(id bson.ObjectId, input models.UpdateCapInput) (*mo
 	return &models.UpdateCap{Success: true}, nil
 }
 
+// queries
+
+
+// Cap ...
 func (q query) Cap(id bson.ObjectId) (*models.Cap, error) {
 	var result = models.Cap{}
-	if err := q.GetCapStore("cap").FindByObjectID(id, &result); err != nil {
+	if err := q.GetStore("cap").FindByObjectID(id, &result); err != nil {
 		return nil, fmt.Errorf("cannot find cap with id: %v, error: %v", id, err)
 	}
 	return &result, nil
 }
 
+// CapByYearWeek ...
 func (q query) CapByYearWeek(year int, week int) (*models.Cap, error) {
 	var filter = bson.M{}
 	var result = &models.Cap{}
 	filter["year"] = year
 	filter["week"] = week
-	if err := q.GetCapStore("cap").FindOne(filter, result); err != nil {
+	if err := q.GetStore("cap").FindOne(filter, result); err != nil {
 		return nil, fmt.Errorf("cannot find cap with year: %d week: %d, error: %v", year, week, err)
 	}
 	return result, nil
 }
 
+// ListCaps ...
 func (q query) ListCaps(pageIndex int, pageSize int, filter string) (*models.CapList, error) {
 	var result = new(models.CapList)
 	caps := make([]*models.Cap, 0, pageSize)
 	var count int
 	var err error
-	if count, err = q.GetCapStore("cap").Count(nil); err != nil {
+	if count, err = q.GetStore("cap").Count(nil); err != nil {
 		return nil, fmt.Errorf("cannot find caps, error: %v", err)
 	}
 
-	if err = q.GetCapStore("cap").FindAll(nil, &caps, pageIndex, pageSize); err != nil {
+	if err = q.GetStore("cap").FindAll(nil, &caps, pageIndex, pageSize); err != nil {
 		return nil, fmt.Errorf("cannot find caps, error: %v", err)
 	}
 	result.Count = count
