@@ -18,6 +18,7 @@ type sysconf struct {
 	Store
 }
 
+
 // Store provides system level config
 type Sysconf interface {
 	Interface
@@ -37,7 +38,7 @@ func newSysconfStore(d Database) Sysconf {
 func (r *sysconf) GetVCSSysConf() ([]types.VCSSysConf, error) {
 
 	result := make([]types.VCSSysConf, 0)
-	err := r.FindAll(bson.M{"kind": VcsKind}, &result)
+	err := r.FindAll(bson.M{"kind": VcsKind}, &result, 1, 10)
 	return result, err
 }
 

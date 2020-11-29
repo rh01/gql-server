@@ -20,7 +20,7 @@ type Interface interface {
 	Upsert(selector interface{}, model interface{}) (*mgo.ChangeInfo, error)
 	Update(selector interface{}, model interface{}) error
 	UpdateID(id interface{}, model interface{}) error
-	FindAll(query interface{}, model interface{}) error
+	FindAll(query interface{}, model interface{}, pageIndex int, pageSize int) error
 	FindOne(query interface{}, model interface{}) error
 	FindByID(id string, model interface{}) error
 	FindByObjectID(id bson.ObjectId, model interface{}) error
@@ -29,6 +29,19 @@ type Interface interface {
 	RemoveBySelector(selector interface{}) error
 	RemoveMultiple(ids []interface{}) error
 	GetSession() *mgo.Session
+	GetCapStore(collectionName string) *Store
+	GetTicketStore(collectionName string) *Store
+}
+
+func (s *Store) GetCapStore(collectionName string) *Store {
+	return &Store{
+		Database:       s.Database,
+		CollectionName: collectionName,
+	}
+}
+
+func (s *Store) GetTicketStore(collectionName string) *Store {
+	panic("implement me")
 }
 
 // Store ..
@@ -109,11 +122,11 @@ func (s *Store) UpdateID(id interface{}, model interface{}) error {
 }
 
 // FindAll the document matches the query on a collection.
-func (s *Store) FindAll(query interface{}, model interface{}) error {
+func (s *Store) FindAll(query interface{}, model interface{}, pageIndex int, pageSize int) error {
 
 	var err error
 	s.Execute(func(c *mgo.Collection) {
-		err = c.Find(query).All(model)
+		err = c.Find(query).Skip((pageIndex - 1) * pageSize).Limit(pageSize).All(model)
 	})
 	return err
 }

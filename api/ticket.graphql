@@ -1,0 +1,21 @@
+
+
+type Ticket {
+    id: ID!
+    order: Map
+    week: String!
+    year: String!
+    created: Timestamp!
+    updated: Timestamp!
+}
+
+
+input NewTicket {
+    order: Map
+}
+
+
+type TicketRes {
+    data: [Ticket!]!
+    count: Int!
+}

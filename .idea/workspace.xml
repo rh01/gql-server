@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b8e40408-f095-4165-8b68-be91a3295bcb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/cmd/modelgen/modelgen.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/graphql/resolver/mutation.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/graphql/resolver/mutation_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/graphql/resolver/query.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/graphql/store/mutation.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/graphql/store/query.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/graphql/store/ticket.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/graphql/identity/oauth2/providers/gitlab.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/graphql/identity/oauth2/providers/gitlab.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/graphql/models/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/graphql/resolver/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/graphql/schema/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/graphql/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/graphql/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/graphql/startup.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/graphql/startup.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/graphql/store/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/graphql/store/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/graphql/store/store.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/graphql/store/store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/graphql/store/sysconf.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/graphql/store/sysconf.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/graphql/vcs/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/graphql/vcs/service.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="$USER_HOME$/sdk/go1.15.5" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1kwWN7KOBTLi2QREcN8TZOdh7nd" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/cmd/modelgen" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="753" y="462" key="#GOROOT" timestamp="1606612095943">
+      <screen x="48" y="23" width="1872" height="1057" />
+    </state>
+    <state x="753" y="462" key="#GOROOT/48.23.1872.1057@48.23.1872.1057" timestamp="1606612095943" />
+    <state x="584" y="218" width="800" height="714" key="#Intentions" timestamp="1606614519436">
+      <screen x="45" y="23" width="1875" height="1057" />
+    </state>
+    <state x="584" y="218" width="800" height="714" key="#Intentions/45.23.1875.1057@45.23.1875.1057" timestamp="1606614519436" />
+    <state x="707" y="361" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1606614922099">
+      <screen x="45" y="23" width="1875" height="1057" />
+    </state>
+    <state x="707" y="361" key="#com.intellij.fileTypes.FileTypeChooser/45.23.1875.1057@45.23.1875.1057" timestamp="1606614922099" />
+    <state x="743" y="233" key="#com.intellij.ide.util.MemberChooser" timestamp="1606617938744">
+      <screen x="43" y="23" width="1877" height="1057" />
+    </state>
+    <state x="743" y="233" key="#com.intellij.ide.util.MemberChooser/43.23.1877.1057@43.23.1877.1057" timestamp="1606617938744" />
+    <state x="743" y="233" key="#com.intellij.ide.util.MemberChooser/44.23.1876.1057@44.23.1876.1057" timestamp="1606613056085" />
+    <state x="744" y="233" key="#com.intellij.ide.util.MemberChooser/45.23.1875.1057@45.23.1875.1057" timestamp="1606614524176" />
+    <state x="809" y="297" width="542" height="753" key="refactoring.ChangeSignatureDialog" timestamp="1606617898071">
+      <screen x="43" y="23" width="1877" height="1057" />
+    </state>
+    <state x="809" y="297" key="refactoring.ChangeSignatureDialog/43.23.1877.1057@43.23.1877.1057" timestamp="1606617898071" />
+    <state x="810" y="297" width="542" height="753" key="refactoring.ChangeSignatureDialog/45.23.1875.1057@45.23.1875.1057" timestamp="1606616120435" />
+    <state x="811" y="297" key="refactoring.ChangeSignatureDialog/47.23.1873.1057@47.23.1873.1057" timestamp="1606612681243" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/internal/graphql/resolver/mutation.go</url>
+          <line>2</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

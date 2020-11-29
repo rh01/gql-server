@@ -1,0 +1,32 @@
+schema:
+- "api/*.graphql"
+
+# Where should the generated server code go?
+exec:
+  filename: internal/graphql/generated/generated.go
+  package: generated
+# Where should any generated models go?
+model:
+  filename: internal/graphql/models/models_gen.go
+  package: models
+
+# Where should the resolver implementations go?
+resolver:
+  filename: internal/graphql/resolver/resolver.go
+  package: resolver
+  type: Resolver
+
+models:
+  ID:
+    model: report/internal/graphql/models.ID
+  Timestamp:
+    model: report/internal/graphql/models.Timestamp
+  CapChanges:
+    model: "map[string]interface{}"
+#  Cap:
+#     model: report/internal/graphql/models.Cap
+autobind: []
+
+
+# Optional: turn on use `gqlgen:"fieldName"` tags in your models
+struct_tag: bson

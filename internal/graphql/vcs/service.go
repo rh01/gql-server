@@ -73,7 +73,7 @@ func (s service) Authorize(w http.ResponseWriter, r *http.Request) {
 	// get provider ...
 	p, err := s.providers.Get(provider)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Getting provider %s failed: %v", provider, err), http.StatusBadRequest)
+		http.Error(w, fmt.Sprintf("[Authorize] Getting provider %s failed: %v", provider, err), http.StatusBadRequest)
 		return
 	}
 

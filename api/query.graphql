@@ -1,0 +1,8 @@
+type Query {
+  #Cap quiries
+  cap(id: ID!): Cap
+  capByYearWeek(year: String!, week: String!): Cap
+  listCaps(pageIndex: Int!, pageSize: Int!, filter: String!): CapList
+  # Ticket quiries
+  tickets(id: ID,year: String, week: String,pageIndex: Int!, pageSize: Int!): TicketRes!
+}

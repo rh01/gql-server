@@ -15,15 +15,19 @@ func NewDatabase(dbname string, session *mgo.Session) Database {
 
 // Report 存储多个结构体
 type Report struct {
-	Vcs     Vcs
-	Sysconf Sysconf
+	Vcs      Vcs
+	Sysconf  Sysconf
+	Mutation Mutation
+	Query    Query
 }
 
 // InitReportStore ：初始化Report项目的存储
 func (db Database) InitReportStore() Report {
 	// create...
 	return Report{
-		Vcs:     newVcsStore(db),
-		Sysconf: newSysconfStore(db),
+		Vcs:      newVcsStore(db),
+		Sysconf:  newSysconfStore(db),
+		Mutation: newMutationStore(db),
+		Query:    newQueryStore(db),
 	}
 }

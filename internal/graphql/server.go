@@ -1,7 +1,11 @@
 package graphql
 
 import (
+	"github.com/99designs/gqlgen/graphql/playground"
 	"net/http/pprof"
+	"report/internal/graphql/generated"
+	"report/internal/graphql/resolver"
+	"github.com/99designs/gqlgen/graphql/handler"
 
 	"context"
 	"report/internal/graphql/identity/oauth2/providers"
@@ -39,7 +43,8 @@ func New(ctx context.Context, c ServerConfig) (*Server, error) {
 
 	s.DB = store.NewDatabase(c.Store.Name, c.Session)
 	s.Report = s.DB.InitReportStore()
-	
+	//s.Store = s.DB.I
+
 	// resolver...
 	// s.Resolver = &resolver.Shift{}
 
@@ -76,7 +81,7 @@ func New(ctx context.Context, c ServerConfig) (*Server, error) {
 		return nil, err
 	}
 
-	// err := NewAuthServer(ctx, r, c)
+	// err = NewAuthServer(ctx, r, c)
 	// if err != nil {
 	// 	return nil, err
 	// }
@@ -86,16 +91,17 @@ func New(ctx context.Context, c ServerConfig) (*Server, error) {
 
 func (s *Server) registerGraphQLServices() error {
 	r := s.Router
-	// initialize graphql
-	r.Handle("/graphql", nil)
-	r.Handle("/graphql/", nil)
 
-	// Graphql endpoint works with websocket only for subscription
-	// psh := pubsub.NewGraphqlWSHandler(s.Pubsub, s.Loggr)
-	// r.Handle("/subscription", psh)
-
+	resolver := resolver.NewResolver(s.Report, s.Logger)
+	execSchema := generated.NewExecutableSchema(generated.Config{Resolvers: resolver})
+	srv := handler.NewDefaultServer(execSchema)
+	r.Handle("/playground", playground.Handler("GraphQL playground", "/graphql"))
+	r.Handle("/query", srv)
+	s.Logger.Debugf("connect to port 8080 for GraphQL playground")
 	return nil
 }
+
+
 
 func (s *Server) registerEndpointServices() {
 
