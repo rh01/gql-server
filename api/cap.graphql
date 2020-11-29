@@ -22,8 +22,8 @@ input UpdateCapInput {
 }
 
 type CapList{
-    code: Int
-    data: [Cap]!
+    code: Int!
+    data: [Cap]
     count: Int!
 }
 

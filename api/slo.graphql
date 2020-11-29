@@ -1,0 +1,44 @@
+type Slo {
+    id: ID!
+
+    product: String!
+    metrics: Map!
+
+    year: Int!
+    week: Int!
+
+    ctime: Timestamp!
+    utime: Timestamp!
+}
+
+input CreateSloInput {
+    product: String!
+    metrics:  Map!
+}
+
+input UpdateSloInput {
+    product: String!
+    metrics:  Map!
+}
+
+type SloList{
+    code: Int!
+    data: [Slo]
+    count: Int!
+}
+
+type UpdateSlo {
+    success: Boolean!
+}
+
+type DeleteSlo {
+    success: Boolean!
+}
+
+type SloPretty {
+    product: String!
+    sloes: [Float]
+    names: [String]
+    year: Int!
+    week: Int!
+}

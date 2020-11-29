@@ -1,21 +1,59 @@
+type Order {
+    normal: Int!
+    abnormal: Int!
 
+    normalLt2h: Int!
+    abnormalLt2h: Int!
+
+    normalGt2h: Int!
+    abnormalGt2h: Int!
+}
+
+type TicketPretty {
+    orders: [Int]
+    aliases: [String]
+    week: Int!
+    year: Int!
+}
 
 type Ticket {
     id: ID!
-    order: Map
-    week: String!
-    year: String!
-    created: Timestamp!
-    updated: Timestamp!
+    order: Order
+    week: Int!
+    year: Int!
+    ctime: Timestamp!
+    utime: Timestamp!
 }
 
-
-input NewTicket {
-    order: Map
-}
-
-
-type TicketRes {
-    data: [Ticket!]!
+type TicketList {
+    data: [Ticket]
     count: Int!
+    code: Int!
+}
+
+
+type UpdateTicket {
+    success: Boolean!
+}
+
+
+type DeleteTicket {
+    success: Boolean!
+}
+
+
+input CreateTicketInput {
+    normalLt2h: Int!
+    abnormalLt2h: Int!
+
+    normalGt2h: Int!
+    abnormalGt2h: Int!
+}
+
+input UpdateTicketInput {
+    normalLt2h: Int!
+    abnormalLt2h: Int!
+
+    normalGt2h: Int!
+    abnormalGt2h: Int!
 }

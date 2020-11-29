@@ -1,0 +1,82 @@
+type Failure {
+    id: ID!
+
+    start_time: Timestamp!
+    end_time: Timestamp!
+    duration: Int
+
+    "业务线"
+    product: String!
+    "故障描述"
+    desc: String!
+    "故障标题"
+    title: String
+    "故障上报人"
+    recorder: String!
+
+    level: String!
+
+    week: String!
+    year: String!
+    created: Timestamp!
+    updated: Timestamp!
+}
+
+
+
+input CreateFailureInput {
+
+    start_time: Timestamp!
+    end_time: Timestamp!
+    duration: Int
+
+    "业务线"
+    product: String!
+    "故障描述"
+    desc: String!
+    "故障标题"
+    title: String
+    "故障上报人"
+    recorder: String!
+
+    level: String!
+}
+
+input UpdateFailureInput {
+    start_time: Timestamp!
+    end_time: Timestamp!
+    duration: Int
+
+    "业务线"
+    product: String!
+    "故障描述"
+    desc: String!
+    "故障标题"
+    title: String
+    "故障上报人"
+    recorder: String!
+
+    level: String!
+}
+
+type FailureList{
+    code: Int!
+    data: [Failure]
+    count: Int!
+}
+
+type UpdateFailure {
+    success: Boolean!
+}
+
+type DeleteFailure {
+    success: Boolean!
+}
+
+type FailurePretty {
+    data: [[Int]]
+    products: [String]
+    levels: [String]
+    year: Int!
+    week: Int!
+}
