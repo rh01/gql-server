@@ -19,6 +19,7 @@ type Interface interface {
 	Save(model interface{}) error
 	Upsert(selector interface{}, model interface{}) (*mgo.ChangeInfo, error)
 	Update(selector interface{}, model interface{}) error
+	Count(query interface{}) (int, error)
 	UpdateID(id interface{}, model interface{}) error
 	FindAll(query interface{}, model interface{}, pageIndex int, pageSize int) error
 	FindOne(query interface{}, model interface{}) error
@@ -31,6 +32,18 @@ type Interface interface {
 	GetSession() *mgo.Session
 	GetCapStore(collectionName string) *Store
 	GetTicketStore(collectionName string) *Store
+}
+
+func (s *Store) Count(query interface{}) (int, error) {
+	var count int
+	var err error
+	s.Execute(func(c *mgo.Collection) {
+		count, err = c.Find(query).Count()
+	})
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }
 
 func (s *Store) GetCapStore(collectionName string) *Store {

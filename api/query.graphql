@@ -1,8 +1,28 @@
 type Query {
-  #Cap quiries
-  cap(id: ID!): Cap
-  capByYearWeek(year: String!, week: String!): Cap
-  listCaps(pageIndex: Int!, pageSize: Int!, filter: String!): CapList
-  # Ticket quiries
-  tickets(id: ID,year: String, week: String,pageIndex: Int!, pageSize: Int!): TicketRes!
+    # Cap queries
+    cap(id: ID!): Cap
+    capByYearWeek(year: Int!, week: Int!): Cap
+    listCaps(pageIndex: Int!, pageSize: Int!, filter: String!): CapList
+    # Ticket queries
+    ticket(id: ID!): Ticket
+    ticketPretty(id: ID!): TicketPretty
+    ticketByYearWeek(year: Int!, week: Int!): Ticket
+    listTickets(pageIndex: Int!, pageSize: Int!, filter: String!): TicketList
+    # OnlineCount queries
+    onlineCount(id: ID!): OnlineCount
+    onlineCountByYearWeek(year: Int!, week: Int!): OnlineCount
+    listOnlineCounts(pageIndex: Int!, pageSize: Int!, filter: String!): OnlineCountList
+    allProductOnlineCount(year: Int!, week: Int!): OnlineCountAllProduct
+    # Failure queries
+    failure(id: ID!): Failure
+    failurePretty(id: ID!): FailurePretty
+    failureByYearWeek(year: Int!, week: Int!): Failure
+    listFailures(pageIndex: Int!, pageSize: Int!, filter: String!): FailureList
+    # Slo queries
+    slo(id: ID!): Slo
+    sloPretty(id: ID!): SloPretty
+    sloByYearWeek(year: Int!, week: Int!): Slo
+    listSlos(pageIndex: Int!, pageSize: Int!, filter: String!): SloList
 }
+
+

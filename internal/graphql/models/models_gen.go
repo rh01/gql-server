@@ -8,6 +8,15 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+type Base struct {
+	Ctime   time.Time `json:"ctime" bson:"ctime"`
+	Utime   time.Time `json:"utime" bson:"utime"`
+	Creator *User     `json:"creator" bson:"creator"`
+	Updator *User     `json:"updator" bson:"updator"`
+	Week    int       `json:"week" bson:"week"`
+	Year    int       `json:"year" bson:"year"`
+}
+
 type Cap struct {
 	ID      bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	Product string        `json:"product" bson:"product"`
@@ -19,7 +28,7 @@ type Cap struct {
 }
 
 type CapList struct {
-	Code  *int   `json:"code" bson:"code"`
+	Code  int    `json:"code" bson:"code"`
 	Data  []*Cap `json:"data" bson:"data"`
 	Count int    `json:"count" bson:"count"`
 }
@@ -29,26 +38,170 @@ type CreateCapInput struct {
 	Desc    string `json:"desc" bson:"desc"`
 }
 
+type CreateFailureInput struct {
+	StartTime time.Time `json:"start_time" bson:"start_time"`
+	EndTime   time.Time `json:"end_time" bson:"end_time"`
+	Duration  *int      `json:"duration" bson:"duration"`
+	// 业务线
+	Product string `json:"product" bson:"product"`
+	// 故障描述
+	Desc string `json:"desc" bson:"desc"`
+	// 故障标题
+	Title *string `json:"title" bson:"title"`
+	// 故障上报人
+	Recorder string `json:"recorder" bson:"recorder"`
+	Level    string `json:"level" bson:"level"`
+}
+
+type CreateOnlineCountInput struct {
+	Product string `json:"product" bson:"product"`
+	Online  int    `json:"online" bson:"online"`
+}
+
+type CreateSloInput struct {
+	Product string                 `json:"product" bson:"product"`
+	Metrics map[string]interface{} `json:"metrics" bson:"metrics"`
+}
+
+type CreateTicketInput struct {
+	NormalLt2h   int `json:"normalLt2h" bson:"normalLt2h"`
+	AbnormalLt2h int `json:"abnormalLt2h" bson:"abnormalLt2h"`
+	NormalGt2h   int `json:"normalGt2h" bson:"normalGt2h"`
+	AbnormalGt2h int `json:"abnormalGt2h" bson:"abnormalGt2h"`
+}
+
 type DeleteCap struct {
 	Success bool `json:"success" bson:"success"`
 }
 
-type NewTicket struct {
-	Order map[string]interface{} `json:"order" bson:"order"`
+type DeleteFailure struct {
+	Success bool `json:"success" bson:"success"`
+}
+
+type DeleteOnlineCount struct {
+	Success bool `json:"success" bson:"success"`
+}
+
+type DeleteSlo struct {
+	Success bool `json:"success" bson:"success"`
+}
+
+type DeleteTicket struct {
+	Success bool `json:"success" bson:"success"`
+}
+
+type Failure struct {
+	ID        bson.ObjectId `json:"id" bson:"_id,omitempty"`
+	StartTime time.Time     `json:"start_time" bson:"start_time"`
+	EndTime   time.Time     `json:"end_time" bson:"end_time"`
+	Duration  *int          `json:"duration" bson:"duration"`
+	// 业务线
+	Product string `json:"product" bson:"product"`
+	// 故障描述
+	Desc string `json:"desc" bson:"desc"`
+	// 故障标题
+	Title *string `json:"title" bson:"title"`
+	// 故障上报人
+	Recorder string    `json:"recorder" bson:"recorder"`
+	Level    string    `json:"level" bson:"level"`
+	Week     string    `json:"week" bson:"week"`
+	Year     string    `json:"year" bson:"year"`
+	Created  time.Time `json:"created" bson:"created"`
+	Updated  time.Time `json:"updated" bson:"updated"`
+}
+
+type FailureList struct {
+	Code  int        `json:"code" bson:"code"`
+	Data  []*Failure `json:"data" bson:"data"`
+	Count int        `json:"count" bson:"count"`
+}
+
+type FailurePretty struct {
+	Data     [][]*int  `json:"data" bson:"data"`
+	Products []*string `json:"products" bson:"products"`
+	Levels   []*string `json:"levels" bson:"levels"`
+	Year     int       `json:"year" bson:"year"`
+	Week     int       `json:"week" bson:"week"`
+}
+
+type OnlineCount struct {
+	ID      bson.ObjectId `json:"id" bson:"_id,omitempty"`
+	Ctime   time.Time     `json:"ctime" bson:"ctime"`
+	Utime   time.Time     `json:"utime" bson:"utime"`
+	Creator *User         `json:"creator" bson:"creator"`
+	Updator *User         `json:"updator" bson:"updator"`
+	Week    int           `json:"week" bson:"week"`
+	Year    int           `json:"year" bson:"year"`
+	Product string        `json:"product" bson:"product"`
+	Online  int           `json:"online" bson:"online"`
+}
+
+type OnlineCountAllProduct struct {
+	Online   []*int    `json:"online" bson:"online"`
+	Products []*string `json:"products" bson:"products"`
+	Year     int       `json:"year" bson:"year"`
+	Week     int       `json:"week" bson:"week"`
+}
+
+type OnlineCountList struct {
+	Data  []*OnlineCount `json:"data" bson:"data"`
+	Count int            `json:"count" bson:"count"`
+	Code  int            `json:"code" bson:"code"`
+}
+
+type Order struct {
+	Normal       int `json:"normal" bson:"normal"`
+	Abnormal     int `json:"abnormal" bson:"abnormal"`
+	NormalLt2h   int `json:"normalLt2h" bson:"normalLt2h"`
+	AbnormalLt2h int `json:"abnormalLt2h" bson:"abnormalLt2h"`
+	NormalGt2h   int `json:"normalGt2h" bson:"normalGt2h"`
+	AbnormalGt2h int `json:"abnormalGt2h" bson:"abnormalGt2h"`
+}
+
+type Slo struct {
+	ID      bson.ObjectId          `json:"id" bson:"_id,omitempty"`
+	Product string                 `json:"product" bson:"product"`
+	Metrics map[string]interface{} `json:"metrics" bson:"metrics"`
+	Year    int                    `json:"year" bson:"year"`
+	Week    int                    `json:"week" bson:"week"`
+	Ctime   time.Time              `json:"ctime" bson:"ctime"`
+	Utime   time.Time              `json:"utime" bson:"utime"`
+}
+
+type SloList struct {
+	Code  int    `json:"code" bson:"code"`
+	Data  []*Slo `json:"data" bson:"data"`
+	Count int    `json:"count" bson:"count"`
+}
+
+type SloPretty struct {
+	Product string     `json:"product" bson:"product"`
+	Sloes   []*float64 `json:"sloes" bson:"sloes"`
+	Names   []*string  `json:"names" bson:"names"`
+	Year    int        `json:"year" bson:"year"`
+	Week    int        `json:"week" bson:"week"`
 }
 
 type Ticket struct {
-	ID      bson.ObjectId          `json:"id" bson:"_id,omitempty"`
-	Order   map[string]interface{} `json:"order" bson:"order"`
-	Week    string                 `json:"week" bson:"week"`
-	Year    string                 `json:"year" bson:"year"`
-	Created time.Time              `json:"created" bson:"created"`
-	Updated time.Time              `json:"updated" bson:"updated"`
+	ID    bson.ObjectId `json:"id" bson:"_id,omitempty"`
+	Order *Order        `json:"order" bson:"order"`
+	Week  int           `json:"week" bson:"week"`
+	Year  int           `json:"year" bson:"year"`
+	Ctime time.Time     `json:"ctime" bson:"ctime"`
+	Utime time.Time     `json:"utime" bson:"utime"`
 }
 
-type TicketRes struct {
+type TicketList struct {
 	Data  []*Ticket `json:"data" bson:"data"`
 	Count int       `json:"count" bson:"count"`
+	Code  int       `json:"code" bson:"code"`
+}
+
+type TicketPretty struct {
+	Orders  []*int    `json:"orders" bson:"orders"`
+	Aliases []*string `json:"aliases" bson:"aliases"`
+	Week    int       `json:"week" bson:"week"`
+	Year    int       `json:"year" bson:"year"`
 }
 
 type UpdateCap struct {
@@ -58,4 +211,56 @@ type UpdateCap struct {
 type UpdateCapInput struct {
 	Product string `json:"product" bson:"product"`
 	Desc    string `json:"desc" bson:"desc"`
+}
+
+type UpdateFailure struct {
+	Success bool `json:"success" bson:"success"`
+}
+
+type UpdateFailureInput struct {
+	StartTime time.Time `json:"start_time" bson:"start_time"`
+	EndTime   time.Time `json:"end_time" bson:"end_time"`
+	Duration  *int      `json:"duration" bson:"duration"`
+	// 业务线
+	Product string `json:"product" bson:"product"`
+	// 故障描述
+	Desc string `json:"desc" bson:"desc"`
+	// 故障标题
+	Title *string `json:"title" bson:"title"`
+	// 故障上报人
+	Recorder string `json:"recorder" bson:"recorder"`
+	Level    string `json:"level" bson:"level"`
+}
+
+type UpdateOnlineCount struct {
+	Success bool `json:"success" bson:"success"`
+}
+
+type UpdateOnlineCountInput struct {
+	Product string `json:"product" bson:"product"`
+	Online  int    `json:"online" bson:"online"`
+}
+
+type UpdateSlo struct {
+	Success bool `json:"success" bson:"success"`
+}
+
+type UpdateSloInput struct {
+	Product string                 `json:"product" bson:"product"`
+	Metrics map[string]interface{} `json:"metrics" bson:"metrics"`
+}
+
+type UpdateTicket struct {
+	Success bool `json:"success" bson:"success"`
+}
+
+type UpdateTicketInput struct {
+	NormalLt2h   int `json:"normalLt2h" bson:"normalLt2h"`
+	AbnormalLt2h int `json:"abnormalLt2h" bson:"abnormalLt2h"`
+	NormalGt2h   int `json:"normalGt2h" bson:"normalGt2h"`
+	AbnormalGt2h int `json:"abnormalGt2h" bson:"abnormalGt2h"`
+}
+
+type User struct {
+	Name string `json:"name" bson:"name"`
 }
