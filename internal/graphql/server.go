@@ -105,11 +105,12 @@ func Disable(h http.HandlerFunc) http.HandlerFunc {
 
 func (s *Server) registerGraphQLServices() error {
 	r := s.Router
+	r.Use(middleware.AuthMiddleware(s.Report))
 	execSchema := generated.NewExecutableSchema(generated.Config{Resolvers: s.Resolver})
 	srv := handler.NewDefaultServer(execSchema)
-	r.Handle("/playground", Disable(playground.Handler("GraphQL playground", "/query")))
+	r.Handle("/playground", playground.Handler("GraphQL playground", "/query"))
 	r.Handle("/query", srv)
-	s.Logger.Debugf("connect to port 8080 for GraphQL playground")
+	s.Logger.Debugf("connect to port %v for GraphQL playground")
 	return nil
 }
 
