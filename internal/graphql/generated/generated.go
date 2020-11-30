@@ -92,7 +92,7 @@ type ComplexityRoot struct {
 	}
 
 	Failure struct {
-		Created   func(childComplexity int) int
+		Ctime     func(childComplexity int) int
 		Desc      func(childComplexity int) int
 		Duration  func(childComplexity int) int
 		EndTime   func(childComplexity int) int
@@ -102,9 +102,15 @@ type ComplexityRoot struct {
 		Recorder  func(childComplexity int) int
 		StartTime func(childComplexity int) int
 		Title     func(childComplexity int) int
-		Updated   func(childComplexity int) int
+		Utime     func(childComplexity int) int
 		Week      func(childComplexity int) int
 		Year      func(childComplexity int) int
+	}
+
+	FailureItem struct {
+		Data func(childComplexity int) int
+		Name func(childComplexity int) int
+		Type func(childComplexity int) int
 	}
 
 	FailureList struct {
@@ -114,11 +120,10 @@ type ComplexityRoot struct {
 	}
 
 	FailurePretty struct {
-		Data     func(childComplexity int) int
-		Levels   func(childComplexity int) int
-		Products func(childComplexity int) int
-		Week     func(childComplexity int) int
-		Year     func(childComplexity int) int
+		Series func(childComplexity int) int
+		Week   func(childComplexity int) int
+		XAxis  func(childComplexity int) int
+		Year   func(childComplexity int) int
 	}
 
 	Mutation struct {
@@ -180,7 +185,7 @@ type ComplexityRoot struct {
 		CapByYearWeek         func(childComplexity int, year int, week int) int
 		Failure               func(childComplexity int, id bson.ObjectId) int
 		FailureByYearWeek     func(childComplexity int, year int, week int) int
-		FailurePretty         func(childComplexity int, id bson.ObjectId) int
+		FailurePretty         func(childComplexity int) int
 		ListCaps              func(childComplexity int, pageIndex int, pageSize int, filter string) int
 		ListFailures          func(childComplexity int, pageIndex int, pageSize int, filter string) int
 		ListOnlineCounts      func(childComplexity int, pageIndex int, pageSize int, filter string) int
@@ -314,7 +319,7 @@ type QueryResolver interface {
 	ListOnlineCounts(ctx context.Context, pageIndex int, pageSize int, filter string) (*models.OnlineCountList, error)
 	AllProductOnlineCount(ctx context.Context, year int, week int) (*models.OnlineCountAllProduct, error)
 	Failure(ctx context.Context, id bson.ObjectId) (*models.Failure, error)
-	FailurePretty(ctx context.Context, id bson.ObjectId) (*models.FailurePretty, error)
+	FailurePretty(ctx context.Context) (*models.FailurePretty, error)
 	FailureByYearWeek(ctx context.Context, year int, week int) (*models.Failure, error)
 	ListFailures(ctx context.Context, pageIndex int, pageSize int, filter string) (*models.FailureList, error)
 	Slo(ctx context.Context, id bson.ObjectId) (*models.Slo, error)
@@ -473,12 +478,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.DeleteTicket.Success(childComplexity), true
 
-	case "Failure.created":
-		if e.complexity.Failure.Created == nil {
+	case "Failure.ctime":
+		if e.complexity.Failure.Ctime == nil {
 			break
 		}
 
-		return e.complexity.Failure.Created(childComplexity), true
+		return e.complexity.Failure.Ctime(childComplexity), true
 
 	case "Failure.desc":
 		if e.complexity.Failure.Desc == nil {
@@ -543,12 +548,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Failure.Title(childComplexity), true
 
-	case "Failure.updated":
-		if e.complexity.Failure.Updated == nil {
+	case "Failure.utime":
+		if e.complexity.Failure.Utime == nil {
 			break
 		}
 
-		return e.complexity.Failure.Updated(childComplexity), true
+		return e.complexity.Failure.Utime(childComplexity), true
 
 	case "Failure.week":
 		if e.complexity.Failure.Week == nil {
@@ -563,6 +568,27 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Failure.Year(childComplexity), true
+
+	case "FailureItem.data":
+		if e.complexity.FailureItem.Data == nil {
+			break
+		}
+
+		return e.complexity.FailureItem.Data(childComplexity), true
+
+	case "FailureItem.name":
+		if e.complexity.FailureItem.Name == nil {
+			break
+		}
+
+		return e.complexity.FailureItem.Name(childComplexity), true
+
+	case "FailureItem.type":
+		if e.complexity.FailureItem.Type == nil {
+			break
+		}
+
+		return e.complexity.FailureItem.Type(childComplexity), true
 
 	case "FailureList.code":
 		if e.complexity.FailureList.Code == nil {
@@ -585,26 +611,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.FailureList.Data(childComplexity), true
 
-	case "FailurePretty.data":
-		if e.complexity.FailurePretty.Data == nil {
+	case "FailurePretty.series":
+		if e.complexity.FailurePretty.Series == nil {
 			break
 		}
 
-		return e.complexity.FailurePretty.Data(childComplexity), true
-
-	case "FailurePretty.levels":
-		if e.complexity.FailurePretty.Levels == nil {
-			break
-		}
-
-		return e.complexity.FailurePretty.Levels(childComplexity), true
-
-	case "FailurePretty.products":
-		if e.complexity.FailurePretty.Products == nil {
-			break
-		}
-
-		return e.complexity.FailurePretty.Products(childComplexity), true
+		return e.complexity.FailurePretty.Series(childComplexity), true
 
 	case "FailurePretty.week":
 		if e.complexity.FailurePretty.Week == nil {
@@ -612,6 +624,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.FailurePretty.Week(childComplexity), true
+
+	case "FailurePretty.xAxis":
+		if e.complexity.FailurePretty.XAxis == nil {
+			break
+		}
+
+		return e.complexity.FailurePretty.XAxis(childComplexity), true
 
 	case "FailurePretty.year":
 		if e.complexity.FailurePretty.Year == nil {
@@ -1041,12 +1060,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			break
 		}
 
-		args, err := ec.field_Query_failurePretty_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.FailurePretty(childComplexity, args["id"].(bson.ObjectId)), true
+		return e.complexity.Query.FailurePretty(childComplexity), true
 
 	case "Query.listCaps":
 		if e.complexity.Query.ListCaps == nil {
@@ -1629,7 +1643,7 @@ type DeleteCap {
 
     start_time: Timestamp!
     end_time: Timestamp!
-    duration: Int
+    duration: Float!
 
     "业务线"
     product: String!
@@ -1644,8 +1658,8 @@ type DeleteCap {
 
     week: Int!
     year: Int!
-    created: Timestamp!
-    updated: Timestamp!
+    ctime: Timestamp!
+    utime: Timestamp!
 }
 
 
@@ -1696,13 +1710,17 @@ type DeleteFailure {
 }
 
 type FailurePretty {
-    data: [[Int]]
-    products: [String]
-    levels: [String]
+    series: [FailureItem!]
+    xAxis: [String!]
     year: Int!
     week: Int!
 }
-`, BuiltIn: false},
+
+type FailureItem {
+    name: String!
+    data: [Int!]
+    type: String!
+}`, BuiltIn: false},
 	{Name: "api/mutation.graphql", Input: `type Mutation {
     # Cap mutations
     deleteCap(id: ID!): DeleteCap
@@ -1793,7 +1811,7 @@ type OnlineCountAllProduct {
     allProductOnlineCount(year: Int!, week: Int!): OnlineCountAllProduct
     # Failure queries
     failure(id: ID!): Failure
-    failurePretty(id: ID!): FailurePretty
+    failurePretty: FailurePretty
     failureByYearWeek(year: Int!, week: Int!): Failure
     listFailures(pageIndex: Int!, pageSize: Int!, filter: String!): FailureList
     # Slo queries
@@ -2405,21 +2423,6 @@ func (ec *executionContext) field_Query_failureByYearWeek_args(ctx context.Conte
 		}
 	}
 	args["week"] = arg1
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_failurePretty_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 bson.ObjectId
-	if tmp, ok := rawArgs["id"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
-		arg0, err = ec.unmarshalNID2gopkgᚗinᚋmgoᚗv2ᚋbsonᚐObjectId(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["id"] = arg0
 	return args, nil
 }
 
@@ -3595,11 +3598,14 @@ func (ec *executionContext) _Failure_duration(ctx context.Context, field graphql
 		return graphql.Null
 	}
 	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
 		return graphql.Null
 	}
-	res := resTmp.(*int)
+	res := resTmp.(float64)
 	fc.Result = res
-	return ec.marshalOInt2ᚖint(ctx, field.Selections, res)
+	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Failure_product(ctx context.Context, field graphql.CollectedField, obj *models.Failure) (ret graphql.Marshaler) {
@@ -3844,7 +3850,7 @@ func (ec *executionContext) _Failure_year(ctx context.Context, field graphql.Col
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Failure_created(ctx context.Context, field graphql.CollectedField, obj *models.Failure) (ret graphql.Marshaler) {
+func (ec *executionContext) _Failure_ctime(ctx context.Context, field graphql.CollectedField, obj *models.Failure) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -3862,7 +3868,7 @@ func (ec *executionContext) _Failure_created(ctx context.Context, field graphql.
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Created, nil
+		return obj.Ctime, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3879,7 +3885,7 @@ func (ec *executionContext) _Failure_created(ctx context.Context, field graphql.
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Failure_updated(ctx context.Context, field graphql.CollectedField, obj *models.Failure) (ret graphql.Marshaler) {
+func (ec *executionContext) _Failure_utime(ctx context.Context, field graphql.CollectedField, obj *models.Failure) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -3897,7 +3903,7 @@ func (ec *executionContext) _Failure_updated(ctx context.Context, field graphql.
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Updated, nil
+		return obj.Utime, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3912,6 +3918,108 @@ func (ec *executionContext) _Failure_updated(ctx context.Context, field graphql.
 	res := resTmp.(time.Time)
 	fc.Result = res
 	return ec.marshalNTimestamp2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FailureItem_name(ctx context.Context, field graphql.CollectedField, obj *models.FailureItem) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FailureItem",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Name, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FailureItem_data(ctx context.Context, field graphql.CollectedField, obj *models.FailureItem) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FailureItem",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Data, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		return graphql.Null
+	}
+	res := resTmp.([]int)
+	fc.Result = res
+	return ec.marshalOInt2ᚕintᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _FailureItem_type(ctx context.Context, field graphql.CollectedField, obj *models.FailureItem) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "FailureItem",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Type, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _FailureList_code(ctx context.Context, field graphql.CollectedField, obj *models.FailureList) (ret graphql.Marshaler) {
@@ -4016,7 +4124,7 @@ func (ec *executionContext) _FailureList_count(ctx context.Context, field graphq
 	return ec.marshalNInt2int(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FailurePretty_data(ctx context.Context, field graphql.CollectedField, obj *models.FailurePretty) (ret graphql.Marshaler) {
+func (ec *executionContext) _FailurePretty_series(ctx context.Context, field graphql.CollectedField, obj *models.FailurePretty) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -4034,7 +4142,7 @@ func (ec *executionContext) _FailurePretty_data(ctx context.Context, field graph
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Data, nil
+		return obj.Series, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4043,12 +4151,12 @@ func (ec *executionContext) _FailurePretty_data(ctx context.Context, field graph
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([][]*int)
+	res := resTmp.([]*models.FailureItem)
 	fc.Result = res
-	return ec.marshalOInt2ᚕᚕᚖint(ctx, field.Selections, res)
+	return ec.marshalOFailureItem2ᚕᚖreportᚋinternalᚋgraphqlᚋmodelsᚐFailureItemᚄ(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _FailurePretty_products(ctx context.Context, field graphql.CollectedField, obj *models.FailurePretty) (ret graphql.Marshaler) {
+func (ec *executionContext) _FailurePretty_xAxis(ctx context.Context, field graphql.CollectedField, obj *models.FailurePretty) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -4066,7 +4174,7 @@ func (ec *executionContext) _FailurePretty_products(ctx context.Context, field g
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Products, nil
+		return obj.XAxis, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4075,41 +4183,9 @@ func (ec *executionContext) _FailurePretty_products(ctx context.Context, field g
 	if resTmp == nil {
 		return graphql.Null
 	}
-	res := resTmp.([]*string)
+	res := resTmp.([]string)
 	fc.Result = res
-	return ec.marshalOString2ᚕᚖstring(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _FailurePretty_levels(ctx context.Context, field graphql.CollectedField, obj *models.FailurePretty) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "FailurePretty",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Levels, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		return graphql.Null
-	}
-	res := resTmp.([]*string)
-	fc.Result = res
-	return ec.marshalOString2ᚕᚖstring(ctx, field.Selections, res)
+	return ec.marshalOString2ᚕstringᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _FailurePretty_year(ctx context.Context, field graphql.CollectedField, obj *models.FailurePretty) (ret graphql.Marshaler) {
@@ -6083,16 +6159,9 @@ func (ec *executionContext) _Query_failurePretty(ctx context.Context, field grap
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_failurePretty_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().FailurePretty(rctx, args["id"].(bson.ObjectId))
+		return ec.resolvers.Query().FailurePretty(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -9993,6 +10062,9 @@ func (ec *executionContext) _Failure(ctx context.Context, sel ast.SelectionSet, 
 			}
 		case "duration":
 			out.Values[i] = ec._Failure_duration(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "product":
 			out.Values[i] = ec._Failure_product(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -10025,13 +10097,47 @@ func (ec *executionContext) _Failure(ctx context.Context, sel ast.SelectionSet, 
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "created":
-			out.Values[i] = ec._Failure_created(ctx, field, obj)
+		case "ctime":
+			out.Values[i] = ec._Failure_ctime(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "updated":
-			out.Values[i] = ec._Failure_updated(ctx, field, obj)
+		case "utime":
+			out.Values[i] = ec._Failure_utime(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var failureItemImplementors = []string{"FailureItem"}
+
+func (ec *executionContext) _FailureItem(ctx context.Context, sel ast.SelectionSet, obj *models.FailureItem) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, failureItemImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("FailureItem")
+		case "name":
+			out.Values[i] = ec._FailureItem_name(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "data":
+			out.Values[i] = ec._FailureItem_data(ctx, field, obj)
+		case "type":
+			out.Values[i] = ec._FailureItem_type(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -10091,12 +10197,10 @@ func (ec *executionContext) _FailurePretty(ctx context.Context, sel ast.Selectio
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("FailurePretty")
-		case "data":
-			out.Values[i] = ec._FailurePretty_data(ctx, field, obj)
-		case "products":
-			out.Values[i] = ec._FailurePretty_products(ctx, field, obj)
-		case "levels":
-			out.Values[i] = ec._FailurePretty_levels(ctx, field, obj)
+		case "series":
+			out.Values[i] = ec._FailurePretty_series(ctx, field, obj)
+		case "xAxis":
+			out.Values[i] = ec._FailurePretty_xAxis(ctx, field, obj)
 		case "year":
 			out.Values[i] = ec._FailurePretty_year(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -11442,6 +11546,16 @@ func (ec *executionContext) marshalNFailure2ᚖreportᚋinternalᚋgraphqlᚋmod
 	return ec._Failure(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalNFailureItem2ᚖreportᚋinternalᚋgraphqlᚋmodelsᚐFailureItem(ctx context.Context, sel ast.SelectionSet, v *models.FailureItem) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._FailureItem(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNFloat2float64(ctx context.Context, v interface{}) (float64, error) {
 	res, err := graphql.UnmarshalFloat(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -12100,6 +12214,46 @@ func (ec *executionContext) marshalOFailure2ᚖreportᚋinternalᚋgraphqlᚋmod
 	return ec._Failure(ctx, sel, v)
 }
 
+func (ec *executionContext) marshalOFailureItem2ᚕᚖreportᚋinternalᚋgraphqlᚋmodelsᚐFailureItemᚄ(ctx context.Context, sel ast.SelectionSet, v []*models.FailureItem) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalNFailureItem2ᚖreportᚋinternalᚋgraphqlᚋmodelsᚐFailureItem(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
 func (ec *executionContext) marshalOFailureList2ᚖreportᚋinternalᚋgraphqlᚋmodelsᚐFailureList(ctx context.Context, sel ast.SelectionSet, v *models.FailureList) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -12150,7 +12304,7 @@ func (ec *executionContext) marshalOFloat2ᚕfloat64ᚄ(ctx context.Context, sel
 	return ret
 }
 
-func (ec *executionContext) unmarshalOInt2ᚕᚕᚖint(ctx context.Context, v interface{}) ([][]*int, error) {
+func (ec *executionContext) unmarshalOInt2ᚕintᚄ(ctx context.Context, v interface{}) ([]int, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -12163,10 +12317,10 @@ func (ec *executionContext) unmarshalOInt2ᚕᚕᚖint(ctx context.Context, v in
 		}
 	}
 	var err error
-	res := make([][]*int, len(vSlice))
+	res := make([]int, len(vSlice))
 	for i := range vSlice {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithIndex(i))
-		res[i], err = ec.unmarshalOInt2ᚕᚖint(ctx, vSlice[i])
+		res[i], err = ec.unmarshalNInt2int(ctx, vSlice[i])
 		if err != nil {
 			return nil, err
 		}
@@ -12174,13 +12328,13 @@ func (ec *executionContext) unmarshalOInt2ᚕᚕᚖint(ctx context.Context, v in
 	return res, nil
 }
 
-func (ec *executionContext) marshalOInt2ᚕᚕᚖint(ctx context.Context, sel ast.SelectionSet, v [][]*int) graphql.Marshaler {
+func (ec *executionContext) marshalOInt2ᚕintᚄ(ctx context.Context, sel ast.SelectionSet, v []int) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}
 	ret := make(graphql.Array, len(v))
 	for i := range v {
-		ret[i] = ec.marshalOInt2ᚕᚖint(ctx, sel, v[i])
+		ret[i] = ec.marshalNInt2int(ctx, sel, v[i])
 	}
 
 	return ret

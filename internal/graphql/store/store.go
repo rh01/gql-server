@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 	"report/internal/pkg/utils"
 
-	mgo "gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
-
 
 // Interface ..
 // Abstract database interactions.
@@ -18,7 +17,8 @@ type Interface interface {
 	Update(selector interface{}, model interface{}) error
 	Count(query interface{}) (int, error)
 	UpdateID(id interface{}, model interface{}) error
-	FindAll(query interface{}, model interface{}, pageIndex int, pageSize int) error
+	FindAllWithPageSize(query interface{}, model interface{}, pageIndex int, pageSize int) error
+	FindAll(query interface{}, model interface{}) error
 	FindOne(query interface{}, model interface{}) error
 	FindByID(id string, model interface{}) error
 	FindByObjectID(id bson.ObjectId, model interface{}) error
@@ -28,6 +28,14 @@ type Interface interface {
 	RemoveMultiple(ids []interface{}) error
 	GetSession() *mgo.Session
 	GetStore(collectionName string) *Store
+}
+
+func (s *Store) FindAll(query interface{}, model interface{}) error {
+	var err error
+	s.Execute(func(c *mgo.Collection) {
+		err = c.Find(query).All(model)
+	})
+	return err
 }
 
 func (s *Store) Count(query interface{}) (int, error) {
@@ -127,7 +135,7 @@ func (s *Store) UpdateID(id interface{}, model interface{}) error {
 }
 
 // FindAll the document matches the query on a collection.
-func (s *Store) FindAll(query interface{}, model interface{}, pageIndex int, pageSize int) error {
+func (s *Store) FindAllWithPageSize(query interface{}, model interface{}, pageIndex int, pageSize int) error {
 
 	var err error
 	s.Execute(func(c *mgo.Collection) {

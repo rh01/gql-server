@@ -15,7 +15,7 @@ type Query {
     allProductOnlineCount(year: Int!, week: Int!): OnlineCountAllProduct
     # Failure queries
     failure(id: ID!): Failure
-    failurePretty(id: ID!): FailurePretty
+    failurePretty: FailurePretty
     failureByYearWeek(year: Int!, week: Int!): Failure
     listFailures(pageIndex: Int!, pageSize: Int!, filter: String!): FailureList
     # Slo queries

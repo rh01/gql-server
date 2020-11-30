@@ -97,7 +97,7 @@ func (q *query) ListTickets(pageIndex int, pageSize int, filter string) (*models
 		return nil, fmt.Errorf("cannot find tickets, error: %v", err)
 	}
 
-	if err = q.GetStore("ticket").FindAll(nil, &tickets, pageIndex, pageSize); err != nil {
+	if err = q.GetStore("ticket").FindAllWithPageSize(nil, &tickets, pageIndex, pageSize); err != nil {
 		return nil, fmt.Errorf("cannot find tickets, error: %v", err)
 	}
 	result.Count = count

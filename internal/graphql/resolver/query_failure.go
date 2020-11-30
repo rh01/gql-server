@@ -10,8 +10,8 @@ func (q QueryResolver) Failure(ctx context.Context, id bson.ObjectId) (*models.F
 	return q.Query.Failure(id)
 }
 
-func (q QueryResolver) FailurePretty(ctx context.Context, id bson.ObjectId) (*models.FailurePretty, error) {
-	return q.Query.FailurePretty(id)
+func (q QueryResolver) FailurePretty(ctx context.Context) (*models.FailurePretty, error) {
+	return q.Query.FailurePretty()
 }
 
 func (q QueryResolver) FailureByYearWeek(ctx context.Context, year int, week int) (*models.Failure, error) {

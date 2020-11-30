@@ -1,5 +1,5 @@
 store:
-    server: 10.0.1.206:27017
+    server: localhost:27017
     name: report
     username: 
     password: 

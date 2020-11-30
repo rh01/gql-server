@@ -97,7 +97,7 @@ type Failure struct {
 	ID        bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	StartTime time.Time     `json:"start_time" bson:"start_time"`
 	EndTime   time.Time     `json:"end_time" bson:"end_time"`
-	Duration  *int          `json:"duration" bson:"duration"`
+	Duration  float64       `json:"duration" bson:"duration"`
 	// 业务线
 	Product string `json:"product" bson:"product"`
 	// 故障描述
@@ -109,8 +109,14 @@ type Failure struct {
 	Level    string    `json:"level" bson:"level"`
 	Week     int       `json:"week" bson:"week"`
 	Year     int       `json:"year" bson:"year"`
-	Created  time.Time `json:"created" bson:"created"`
-	Updated  time.Time `json:"updated" bson:"updated"`
+	Ctime    time.Time `json:"ctime" bson:"ctime"`
+	Utime    time.Time `json:"utime" bson:"utime"`
+}
+
+type FailureItem struct {
+	Name string `json:"name" bson:"name"`
+	Data []int  `json:"data" bson:"data"`
+	Type string `json:"type" bson:"type"`
 }
 
 type FailureList struct {
@@ -120,11 +126,10 @@ type FailureList struct {
 }
 
 type FailurePretty struct {
-	Data     [][]*int  `json:"data" bson:"data"`
-	Products []*string `json:"products" bson:"products"`
-	Levels   []*string `json:"levels" bson:"levels"`
-	Year     int       `json:"year" bson:"year"`
-	Week     int       `json:"week" bson:"week"`
+	Series []*FailureItem `json:"series" bson:"series"`
+	XAxis  []string       `json:"xAxis" bson:"xAxis"`
+	Year   int            `json:"year" bson:"year"`
+	Week   int            `json:"week" bson:"week"`
 }
 
 type LoginInput struct {

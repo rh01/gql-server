@@ -8,7 +8,7 @@ import (
 
 func (q query) Users() ([]*models.User, error) {
 	var users = make([]*models.User, 0)
-	if err := q.GetStore("user").FindAll(nil, users, -1, -1); err != nil {
+	if err := q.GetStore("user").FindAllWithPageSize(nil, users, -1, -1); err != nil {
 		return nil, err
 	}
 	return users, nil

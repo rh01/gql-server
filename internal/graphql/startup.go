@@ -22,7 +22,7 @@ import (
 // Run ...
 // run server
 func Run() error {
-	cfgFile := "/Users/shh/gs/p1129/report/config/config.yaml"
+	cfgFile := "config/config.yaml"
 	cfgData, err := ioutil.ReadFile(cfgFile)
 
 	var c Config
