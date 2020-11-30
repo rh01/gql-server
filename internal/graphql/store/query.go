@@ -25,7 +25,7 @@ type Query interface {
 	ListTickets(pageIndex int, pageSize int, filter string) (*models.TicketList, error)
 
 	Failure(id bson.ObjectId) (*models.Failure, error)
-	FailurePretty(id bson.ObjectId) (*models.FailurePretty, error)
+	FailurePretty() (*models.FailurePretty, error)
 	FailureByYearWeek(year int, week int) (*models.Failure, error)
 	ListFailures(pageIndex int, pageSize int, filter string) (*models.FailureList, error)
 

@@ -38,7 +38,7 @@ func newSysconfStore(d Database) Sysconf {
 func (r *sysconf) GetVCSSysConf() ([]types.VCSSysConf, error) {
 
 	result := make([]types.VCSSysConf, 0)
-	err := r.FindAll(bson.M{"kind": VcsKind}, &result, 1, 10)
+	err := r.FindAllWithPageSize(bson.M{"kind": VcsKind}, &result, 1, 10)
 	return result, err
 }
 

@@ -3,7 +3,7 @@ type Failure {
 
     start_time: Timestamp!
     end_time: Timestamp!
-    duration: Int
+    duration: Float!
 
     "业务线"
     product: String!
@@ -18,8 +18,8 @@ type Failure {
 
     week: Int!
     year: Int!
-    created: Timestamp!
-    updated: Timestamp!
+    ctime: Timestamp!
+    utime: Timestamp!
 }
 
 
@@ -70,9 +70,14 @@ type DeleteFailure {
 }
 
 type FailurePretty {
-    data: [[Int]]
-    products: [String]
-    levels: [String]
+    series: [FailureItem!]
+    xAxis: [String!]
     year: Int!
     week: Int!
+}
+
+type FailureItem {
+    name: String!
+    data: [Int!]
+    type: String!
 }

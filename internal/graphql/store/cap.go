@@ -98,7 +98,7 @@ func (q query) ListCaps(pageIndex int, pageSize int, filter string) (*models.Cap
 		return nil, fmt.Errorf("cannot find caps, error: %v", err)
 	}
 
-	if err = q.GetStore("cap").FindAll(nil, &caps, pageIndex, pageSize); err != nil {
+	if err = q.GetStore("cap").FindAllWithPageSize(nil, &caps, pageIndex, pageSize); err != nil {
 		return nil, fmt.Errorf("cannot find caps, error: %v", err)
 	}
 	result.Count = count

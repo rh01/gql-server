@@ -39,7 +39,7 @@ func (q *query) SloPretty(id bson.ObjectId) (*models.SloPretty, error) {
 
 	var filter = bson.M{}
 	filter["_id"] = id
-	if err := q.GetStore("Slo").FindOne(filter, slo); err != nil {
+	if err := q.GetStore("slo").FindOne(filter, slo); err != nil {
 		return nil, fmt.Errorf("cannot find slo with id %s, error: %v", id.Hex(), err)
 	}
 	pretty.Legend = make([]string, 0)
@@ -118,7 +118,7 @@ func (q *query) ListSlos(pageIndex int, pageSize int, filter string) (*models.Sl
 		return nil, fmt.Errorf("cannot find Slos, error: %v", err)
 	}
 
-	if err = q.GetStore("slo").FindAll(nil, &Slos, pageIndex, pageSize); err != nil {
+	if err = q.GetStore("slo").FindAllWithPageSize(nil, &Slos, pageIndex, pageSize); err != nil {
 		return nil, fmt.Errorf("cannot find Slos, error: %v", err)
 	}
 	result.Count = count
@@ -144,30 +144,33 @@ func (m *mutation) CreateSlo(input *models.CreateSloInput) (*models.Slo, error) 
 	q := bson.M{}
 	q["year"] = year
 	q["week"] = week
-	var Slo = &models.Slo{}
-	if err := m.GetStore("slo").FindOne(q, Slo); err != nil {
+	q["product"] = input.Product
+	var slo = &models.Slo{}
+	if err := m.GetStore("slo").FindOne(q, slo); err != nil {
 		if err == mgo.ErrNotFound {
-			m.Logger.Infof("can't find Slo, I will create new one'")
+			m.Logger.Infof("can't find slo, I will create new one'")
 
-			Slo = &models.Slo{}
-			Slo.Ctime = time.Now().UTC()
-			Slo.Utime = time.Now().UTC()
+			slo = &models.Slo{}
+			slo.Ctime = time.Now().UTC()
+			slo.Utime = time.Now().UTC()
 
-			Slo.Year, Slo.Week = year, week
+
+			slo.Year, slo.Week = year, week
 			// first observe this year and week whether exist or not product record
+			slo.Metrics = input.Metrics
+			slo.Product = input.Product
+			if err := m.GetStore("slo").Save(slo); err != nil {
+				m.Logger.Errorf("cannot insert slo, error: %v", err)
 
-			if err := m.GetStore("slo").Save(Slo); err != nil {
-				m.Logger.Errorf("cannot insert Slo, error: %v", err)
-
-				return nil, fmt.Errorf("cannot insert Slo, error: %v", err)
+				return nil, fmt.Errorf("cannot insert slo, error: %v", err)
 			}
-			return Slo, nil
+			return slo, nil
 		}
-		m.Logger.Errorf("cannot find Slo, error: %v", err)
-		return nil, fmt.Errorf("cannot find Slo, error: %v", err)
+		m.Logger.Errorf("cannot find slo, error: %v", err)
+		return nil, fmt.Errorf("cannot find slo, error: %v", err)
 	}
-	m.Logger.Errorf("create new Slo document failed, because Slo has exist")
-	return nil, fmt.Errorf("create new Slo document failed, because Slo has exist")
+	m.Logger.Errorf("create new slo document failed, because slo has exist")
+	return nil, fmt.Errorf("create new slo document failed, because slo has exist")
 }
 
 func (m *mutation) UpdateSlo(id bson.ObjectId, input models.UpdateSloInput) (*models.UpdateSlo, error) {

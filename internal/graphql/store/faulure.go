@@ -18,27 +18,57 @@ func (q *query) Failure(id bson.ObjectId) (*models.Failure, error) {
 }
 
 // FailurePretty ...
-func (q *query) FailurePretty(id bson.ObjectId) (*models.FailurePretty, error) {
+func (q *query) FailurePretty() (*models.FailurePretty, error) {
+	year, week := time.Now().ISOWeek()
 	/**
-		Data     [][]*int  `json:"data" bson:"data"`
-		Products []*string `json:"products" bson:"products"`
-		Levels   []*string `json:"levels" bson:"levels"`
-		Year     int       `json:"year" bson:"year"`
-		Week     int       `json:"week" bson:"week"
+	series: [FailureItem!]
+	xAxis: [String!]
+	year: Int!
+	week: Int!
+
+	series: [{name: "P1", type: "bar", data: [ç]},…]
+	0: {name: "P1", type: "bar", data: [0, 0, 0, 0, 0, 0]}
+	1: {name: "P2", type: "bar", data: [1, 0, 0, 1, 0, 0]}
+	2: {name: "P3", type: "bar", data: [0, 0, 0, 0, 0, 0]}
+	3: {name: "P4", type: "bar", data: [0, 0, 0, 0, 0, 0]}
+
+	data: ["ke", "ai", "ead", "dict", "zhiyun", "fanyi"]
 	*/
 	// legend.data ['GPU显卡使用率', 'slurm显卡使用率(监控)', 'slurm集群显卡使用率']
 	// [53, 60, 91.15],
-	var pretty = &models.FailurePretty{}
-	var failure = &models.Failure{}
-
-	var filter = bson.M{}
-	filter["_id"] = id
-	if err := q.GetStore("Failure").FindOne(filter, failure); err != nil {
-		return nil, fmt.Errorf("cannot find failure with id %s, error: %v", id.Hex(), err)
+	legends := []string{"ke", "ai", "ead", "dict", "zhiyun", "fanyi"}
+	levels := []string{"P1", "P2", "P3", "P4"}
+	series := []*models.FailureItem{
+		{"P1", []int{0, 0, 0, 0, 0, 0}, "bar"},
+		{"P2", []int{0, 0, 0, 0, 0, 0}, "bar"},
+		{"P3", []int{0, 0, 0, 0, 0, 0}, "bar"},
+		{"P4", []int{0, 0, 0, 0, 0, 0}, "bar"},
 	}
 
-	pretty.Year = failure.Year
-	pretty.Week = failure.Week
+	var pretty = &models.FailurePretty{}
+
+	var filter = bson.M{}
+	filter["year"] = year
+	filter["week"] = week
+	var failures = []*models.Failure{}
+	if err := q.GetStore("failure").FindAll(filter, &failures); err != nil {
+		return nil, fmt.Errorf("cannot find failure  error: %v", err)
+	}
+
+	fmt.Println(len(failures))
+	pretty.Year = year
+	pretty.Week = week
+	pretty.XAxis = legends
+	for k1, level := range levels {
+		for k2, product := range legends {
+			for _, fail := range failures {
+				if fail.Level == level && fail.Product == product {
+					series[k1].Data[k2] += 1
+				}
+			}
+		}
+	}
+	pretty.Series = series
 
 	return pretty, nil
 }
@@ -64,7 +94,7 @@ func (q *query) ListFailures(pageIndex int, pageSize int, filter string) (*model
 		return nil, fmt.Errorf("cannot find Failures, error: %v", err)
 	}
 
-	if err = q.GetStore("failure").FindAll(nil, &Failures, pageIndex, pageSize); err != nil {
+	if err = q.GetStore("failure").FindAllWithPageSize(nil, &Failures, pageIndex, pageSize); err != nil {
 		return nil, fmt.Errorf("cannot find Failures, error: %v", err)
 	}
 	result.Count = count
@@ -86,19 +116,30 @@ func (m *mutation) DeleteFailure(id bson.ObjectId) (*models.DeleteFailure, error
 }
 
 func (m *mutation) CreateFailure(input *models.CreateFailureInput) (*models.Failure, error) {
-	year, week := time.Now().ISOWeek()
+	year, week := input.StartTime.ISOWeek()
 	q := bson.M{}
 	q["year"] = year
 	q["week"] = week
+	q["product"] = input.Product
+	q["desc"] = input.Desc
 	var failure = &models.Failure{}
+	// first observe this year and week whether exist or not product record
 	if err := m.GetStore("failure").FindOne(q, failure); err != nil {
 		if err == mgo.ErrNotFound {
 			m.Logger.Infof("can't find Failure, I will create new one'")
 
 			failure = &models.Failure{}
-
 			failure.Year, failure.Week = year, week
-			// first observe this year and week whether exist or not product record
+			failure.Product = input.Product
+			failure.Desc = input.Desc
+			failure.Ctime = time.Now().UTC()
+			failure.Utime = time.Now().UTC()
+			failure.Level = input.Level
+			failure.StartTime = input.StartTime
+			failure.EndTime = input.EndTime
+			failure.Duration = input.EndTime.Sub(input.StartTime).Seconds()
+			failure.Recorder = input.Recorder
+			failure.Title = input.Title
 
 			if err := m.GetStore("failure").Save(failure); err != nil {
 				m.Logger.Errorf("cannot insert Failure, error: %v", err)
