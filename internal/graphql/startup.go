@@ -92,7 +92,7 @@ func Run() error {
 	corsHandler := handlers.CORS(corsOpts)
 	recoveryHandler := handlers.RecoveryHandler()
 
-	publicChain := alice.New(recoveryHandler, corsHandler)
+	publicChain := alice.New(recoveryHandler, corsHandler, )
 
 	s, err := New(ctx, sc)
 	if err != nil {
